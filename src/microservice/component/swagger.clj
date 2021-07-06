@@ -5,7 +5,7 @@
             [reitit.swagger-ui :as swagger-ui]
             [taoensso.timbre :as timbre]))
 
-(def ^:private routes
+(defn- swagger-routes []
   ["/swagger.json"
    {:get {:no-doc  true
           :swagger {:info     {:title "Wedding API"}
@@ -22,7 +22,7 @@
                     (ring/create-default-handler))]
       (timbre/info "Started Swagger component")
       (assoc this :swagger swagger
-                  :swagger-routes routes)))
+                  :swagger-routes (swagger-routes))))
 
   (stop [this]
     (timbre/info "Stopping Swagger component")
