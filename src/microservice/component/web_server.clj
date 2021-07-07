@@ -27,5 +27,5 @@
   [handler-ref]
   (component/using
     (map->WebServer {:port         (get env :WEDDING_WEB_SERVER_PORT 8000)
-                     :thread-count (get env :WEDDING_WEB_SERVER_THREAD_COUNT 4)})
+                     :thread-count (get env :WEDDING_WEB_SERVER_THREAD_COUNT 8)})
     {:handler handler-ref}))
