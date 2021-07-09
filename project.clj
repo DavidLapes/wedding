@@ -1,4 +1,4 @@
-(defproject cleverly-crm "0.1.0-SNAPSHOT"
+(defproject wedding "0.1.0-SNAPSHOT"
   :description "Wedding Software"
   :url "https://github.com/DavidLapes/wedding"
   :license {:name "Apache License 2.0"
