@@ -16,16 +16,14 @@
   stop-system #'component/stop)
 
 (defn- start
+  []
   "Starts Wedding application."
-  ([]
-   (start {}))
-  ([{:keys [dev?] :or {dev? false} :as args}]
-   (when-not system
-     (timbre/info "Starting Wedding application")
-     (let [new-system (start-system (system/make-system args))]
-       (alter-var-root #'system (constantly new-system))
-       (timbre/info "Started Wedding application")
-       :ok))))
+  (when-not system
+    (timbre/info "Starting Wedding application")
+    (let [new-system (start-system (system/make-system))]
+      (alter-var-root #'system (constantly new-system))
+      (timbre/info "Started Wedding application")
+      :ok)))
 
 (defn- stop
   "Stops Wedding application."
@@ -38,12 +36,10 @@
     :stop))
 
 (defn- reset
+  []
   "Resets Wedding application."
-  ([]
-   (reset {}))
-  ([{:keys [dev?] :or {dev? false} :as args}]
-   (timbre/info "Re-starting Wedding application")
-   (stop)
-   (start args)
-   (timbre/info "Re-started Wedding application")
-   :reset))
+  (timbre/info "Re-starting Wedding application")
+  (stop)
+  (start)
+  (timbre/info "Re-started Wedding application")
+  :reset)

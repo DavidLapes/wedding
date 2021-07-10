@@ -10,9 +10,7 @@
     (timbre/info "Starting Ring Handler component")
     (let [router  (:router router)
           swagger (:swagger swagger)
-          handler (if (some? swagger)
-                    (ring/ring-handler router swagger)
-                    (ring/ring-handler router))]
+          handler (ring/ring-handler router swagger)]
       (timbre/info "Started Ring Handler component")
       (assoc this :handler handler)))
 
@@ -23,12 +21,8 @@
 
 (defn new-handler
   "Returns instance of DataSource component."
-  ([router-ref]
-   (component/using
-     (map->Handler {})
-     {:router router-ref}))
-  ([router-ref swagger-ref]
-   (component/using
-     (map->Handler {})
-     {:router  router-ref
-      :swagger swagger-ref})))
+  [router-ref swagger-ref]
+  (component/using
+    (map->Handler {})
+    {:router  router-ref
+     :swagger swagger-ref}))

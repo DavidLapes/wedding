@@ -7,6 +7,7 @@
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.exception :as exception]
             [reitit.ring.coercion :as coercion]
+            [ring.logger :as logger]
             [taoensso.timbre :as timbre]
             [wedding.api.route.public.health-check :as health-check]))
 
@@ -15,19 +16,17 @@
 
   (start [this]
     (timbre/info "Starting Router component")
-    (let [swagger-routes (:swagger-routes swagger)
-          swagger-routes (if (some? swagger-routes)
-                           [swagger-routes]
-                           [])
-          routes ["/api"
-                  ["/public"
-                   health-check/routes]]
-          router (ring/router
-                   (conj swagger-routes routes)
+    (let [router (ring/router
+                   [(:swagger-routes swagger)
+                    ["/api"
+                     ["/public"
+                      health-check/routes]]]
                    {:data {:coercion   reitit-spec/coercion
                            :ctx        {}
                            :muuntaja   m/instance
-                           :middleware [;; query-params & form-params
+                           :middleware [;; ring handler logger
+                                        logger/wrap-with-logger
+                                        ;; query-params & form-params
                                         parameters/parameters-middleware
                                         ;; content-negotiation
                                         muuntaja/format-negotiate-middleware
@@ -52,9 +51,7 @@
 
 (defn new-router
   "Returns instance of Router component."
-  ([]
-   (map->Router {}))
-  ([swagger-ref]
-   (component/using
-     (map->Router {})
-     {:swagger     swagger-ref})))
+  [swagger-ref]
+  (component/using
+    (map->Router {})
+    {:swagger swagger-ref}))
