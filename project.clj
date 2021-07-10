@@ -23,7 +23,10 @@
                  [org.slf4j/log4j-over-slf4j "1.7.30"]
                  [org.slf4j/jul-to-slf4j "1.7.30"]
                  [org.slf4j/jcl-over-slf4j "1.7.30"]
-                 [com.stuartsierra/component "1.0.0"]]
+                 [com.stuartsierra/component "1.0.0"]
+                 [hikari-cp "2.12.0"]
+                 [clj-postgresql "0.7.0" :exclusions [ch.qos.logback/logback-core
+                                                      ch.qos.logback/logback-classic]]]
 
   :plugins [[lein-environ "1.2.0" :hooks false]]
 

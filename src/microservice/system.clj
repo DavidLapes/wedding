@@ -1,5 +1,6 @@
 (ns microservice.system
   (:require [com.stuartsierra.component :as component]
+            [microservice.component.datasource :as datasource]
             [microservice.component.handler :as handler]
             [microservice.component.router :as router]
             [microservice.component.swagger :as swagger]
@@ -11,6 +12,7 @@
   []
   (logging/init-logging)
   (component/system-map
+    #_#_:wedding.component/datasource (datasource/new-datasource)
     :wedding.component/handler (handler/new-handler :wedding.component/router
                                                     :wedding.component/swagger)
     :wedding.component/router (router/new-router :wedding.component/swagger)
