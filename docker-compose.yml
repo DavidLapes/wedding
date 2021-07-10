@@ -1,0 +1,9 @@
+version: '3.0'
+services:
+  weddingbackend:
+    restart: 'always'
+    ports:
+      - '8000:8000'
+    build:
+      context: .
+      dockerfile: Dockerfile
