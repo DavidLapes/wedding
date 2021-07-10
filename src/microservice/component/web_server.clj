@@ -13,6 +13,7 @@
           server (server/run-server handler {:port   port
                                              :thread thread-count})]
       (timbre/info "Started WebServer component")
+      (timbre/info (str "SERVER PORT - { " port " }"))
       (assoc this :web-server server)))
 
   (stop [this]
