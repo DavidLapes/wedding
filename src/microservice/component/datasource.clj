@@ -34,14 +34,15 @@
     (timbre/info "Starting DataSource component")
     (let [datasource (hikari/make-datasource datasource-schema)]
       (timbre/info "Started DataSource component")
-      (assoc this :datasource datasource)))
+      (assoc this :datasource        datasource
+                  :datasource-schema datasource-schema)))
 
   (stop [this]
     (timbre/info "Stopping DataSource component")
     (let [datasource (:datasource this)]
       (hikari/close-datasource datasource)
       (timbre/info "Stopped DataSource component")
-      (dissoc this :datasource))))
+      (dissoc this :datasource :datasource-schema))))
 
 (defn new-datasource
   "Returns instance of DataSource component."

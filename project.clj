@@ -24,7 +24,12 @@
                  [org.slf4j/jul-to-slf4j "1.7.30"]
                  [org.slf4j/jcl-over-slf4j "1.7.30"]
                  [com.stuartsierra/component "1.0.0"]
+                 [org.postgresql/postgresql "42.2.18"]
+                 [funcool/clojure.jdbc "0.9.0"]
+                 [migratus "1.3.3"]
                  [hikari-cp "2.12.0"]
+                 [honeysql "1.0.444"]
+                 [nilenso/honeysql-postgres "0.2.6"]
                  [clj-postgresql "0.7.0" :exclusions [ch.qos.logback/logback-core
                                                       ch.qos.logback/logback-classic]]]
 
