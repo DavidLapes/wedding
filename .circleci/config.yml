@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            npm ci --prefix resources/frontend
+            npm install --no-optional --prefix resources/frontend
 
       - run:
           name: Build React website
