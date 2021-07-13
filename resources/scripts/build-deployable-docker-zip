@@ -1,0 +1,9 @@
+cd ../..
+rm -rf target/build
+mkdir target/build
+cp -r .ebextensions target/build/.ebextensions
+cp Dockerfile target/build/Dockerfile
+cp docker-compose.yml target/build/docker-compose.yml
+cp wedding.jar target/build/wedding.jar
+cd target/build
+zip -r wedding.zip .
