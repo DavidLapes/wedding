@@ -60,10 +60,12 @@ jobs:
           command: |
             lein uberjar
             cp target/wedding-0.1.0-SNAPSHOT-standalone.jar wedding.jar
+            ls
 
       - run:
           name: Deploying
           command: |
+            ls
             eb deploy Terkaberedavidaclojure-env
 workflows:
   build:
