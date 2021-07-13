@@ -27,6 +27,6 @@
   "Returns instance of WebServer component."
   [handler-ref]
   (component/using
-    (map->WebServer {:port         (get env :WEDDING_WEB_SERVER_PORT 8000)
+    (map->WebServer {:port         (get env :WEDDING_WEB_SERVER_PORT 5000)
                      :thread-count (get env :WEDDING_WEB_SERVER_THREAD_COUNT 8)})
     {:handler handler-ref}))
