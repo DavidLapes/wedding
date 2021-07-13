@@ -51,17 +51,16 @@ jobs:
       - run:
           name: Installing deployment dependencies
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip3 install awsebcli
+#            sudo apt-get -y -qq update
+#            sudo apt-get install python3-pip python3-dev build-essential
+#             sudo pip3 install awsebcli
 
       - run:
           name: Building Wedding application
           command: |
+            lein uberjar
             ls
-            cd resources/scripts
-            sudo ./build-uberjar.sh
-            sudo ./build-deployable-docker.zip
+            cp target/wedding-0.1.0-SNAPSHOT-standalone.jar wedding.jar
 
       - run:
           name: Deploying
@@ -72,5 +71,4 @@ jobs:
 workflows:
   build:
     jobs:
-      - build
       - deploy
