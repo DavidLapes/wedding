@@ -3,7 +3,7 @@ services:
   weddingbackend:
     restart: 'always'
     ports:
-      - '443:5000'
+      - '8123:80'
     build:
       context: .
       dockerfile: Dockerfile
