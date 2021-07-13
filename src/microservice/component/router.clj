@@ -9,26 +9,32 @@
             [reitit.ring.coercion :as coercion]
             [ring.logger :as logger]
             [taoensso.timbre :as timbre]
-            [wedding.api.route.public.health-check :as health-check]
+            [wedding.api.route.health-check :as health-check]
+            [wedding.api.route.public.auth :as auth]
             [wedding.auth.middleware :as authentication]))
 
-(defrecord Router [swagger]
+(defrecord Router [datasource swagger]
   component/Lifecycle
 
   (start [this]
     (timbre/info "Starting Router component")
     (let [router (ring/router
                    [(:swagger-routes swagger)
+                    health-check/routes
+
                     ["/api"
+
                      ["/public"
-                      health-check/routes]]]
+                      auth/routes]
+
+                     ["/private"
+                      {:middleware [authentication/wrap-with-jwt-middleware]}]]]
+
                    {:data {:coercion   reitit-spec/coercion
-                           :ctx        {}
+                           :ctx        {:datasource (:datasource datasource)}
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger
                                         logger/wrap-with-logger
-                                        ;; buddy authentication
-                                        authentication/wrap-with-jwt-middleware
                                         ;; query-params & form-params
                                         parameters/parameters-middleware
                                         ;; content-negotiation
@@ -37,7 +43,7 @@
                                         muuntaja/format-response-middleware
                                         ;; exception handling
                                         ;;TODO Error & Exception handling
-                                        exception/exception-middleware
+                                        ;;exception/exception-middleware
                                         ;; decoding request body
                                         muuntaja/format-request-middleware
                                         ;; coercing response body
@@ -54,7 +60,8 @@
 
 (defn new-router
   "Returns instance of Router component."
-  [swagger-ref]
+  [datasource-ref swagger-ref]
   (component/using
     (map->Router {})
-    {:swagger swagger-ref}))
+    {:datasource datasource-ref
+     :swagger    swagger-ref}))

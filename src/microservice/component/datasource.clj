@@ -32,10 +32,13 @@
 
   (start [this]
     (timbre/info "Starting DataSource component")
-    (let [datasource (hikari/make-datasource datasource-schema)]
+    ;;TODO: Fix for AWS
+    #_(let [datasource (hikari/make-datasource datasource-schema)]
       (timbre/info "Started DataSource component")
       (assoc this :datasource        datasource
-                  :datasource-schema datasource-schema)))
+                  :datasource-schema datasource-schema))
+    (assoc this :datasource nil
+                :datasource-schema nil))
 
   (stop [this]
     (timbre/info "Stopping DataSource component")

@@ -5,21 +5,24 @@
             [taoensso.timbre :as timbre]
             [wedding.lib.db.utils :refer [execute-sql-file]]))
 
-(defn- datasource-schema->migration-schema [datasource-schema]
-  {:db (:database-name datasource-schema)
-   :host (:server-name datasource-schema)
-   :port (:port-number datasource-schema)
-   :subname (str "//" (:server-name datasource-schema) ":" (:port-number datasource-schema) "/" (:database-name datasource-schema))
-   :subprotocol (:adapter datasource-schema)
-   :user "postgres"
-   :password "password"})
+(defn- datasource-schema->migration-schema
+  [datasource-schema]
+  {:store         :database
+   :migration-dir "migrations"
+   :db            {:db (:database-name datasource-schema)
+                   :host (:server-name datasource-schema)
+                   :port (:port-number datasource-schema)
+                   :subname (str "//" (:server-name datasource-schema) ":" (:port-number datasource-schema) "/" (:database-name datasource-schema))
+                   :subprotocol (:adapter datasource-schema)
+                   :user "postgres"
+                   :password "password"}})
 
 (defrecord Migration [datasource]
   component/Lifecycle
 
   (start [this]
-    (let [datasource (:datasource datasource)
-          datasource-schema (:datasource-schema datasource)
+    (let [datasource-schema (:datasource-schema datasource)
+          datasource (:datasource datasource)
           migration-schema (datasource-schema->migration-schema datasource-schema)]
       (jdbc/with-db-connection [connection {:datasource datasource}]
         (try

@@ -1,4 +1,4 @@
-(ns wedding.api.route.public.health-check
+(ns wedding.api.route.health-check
   (:require [wedding.api.controller.health-check :as controller]
             [wedding.lib.api.router :refer [wrap-with-context]]))
 
