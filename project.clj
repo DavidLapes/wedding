@@ -26,12 +26,21 @@
                  [com.stuartsierra/component "1.0.0"]
                  [org.postgresql/postgresql "42.2.18"]
                  [funcool/clojure.jdbc "0.9.0"]
-                 [migratus "1.3.3"]
+                 [migratus "1.3.3" :exclusions [org.clojure/tools.logging]]
                  [hikari-cp "2.12.0"]
                  [honeysql "1.0.444"]
                  [nilenso/honeysql-postgres "0.2.6"]
                  [clj-postgresql "0.7.0" :exclusions [ch.qos.logback/logback-core
-                                                      ch.qos.logback/logback-classic]]]
+                                                      ch.qos.logback/logback-classic]]
+                 [buddy "2.0.0" :exclusions [cheshire
+                                             com.fasterxml.jackson.dataformat/jackson-dataformat-smile
+                                             com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]]
+                 [buddy/buddy-core "1.9.0" :exclusions [cheshire
+                                                        com.fasterxml.jackson.dataformat/jackson-dataformat-smile
+                                                        com.fasterxml.jackson.dataformat/jackson-dataformat-cbor tigris]]
+                 [buddy/buddy-hashers "1.6.0" :exclusions [cheshire
+                                                           com.fasterxml.jackson.dataformat/jackson-dataformat-smile
+                                                           com.fasterxml.jackson.dataformat/jackson-dataformat-cbor tigris]]]
 
   :plugins [[lein-environ "1.2.0" :hooks false]]
 

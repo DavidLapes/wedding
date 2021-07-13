@@ -9,7 +9,8 @@
             [reitit.ring.coercion :as coercion]
             [ring.logger :as logger]
             [taoensso.timbre :as timbre]
-            [wedding.api.route.public.health-check :as health-check]))
+            [wedding.api.route.public.health-check :as health-check]
+            [wedding.auth.middleware :as authentication]))
 
 (defrecord Router [swagger]
   component/Lifecycle
@@ -26,6 +27,8 @@
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger
                                         logger/wrap-with-logger
+                                        ;; buddy authentication
+                                        authentication/wrap-with-jwt-middleware
                                         ;; query-params & form-params
                                         parameters/parameters-middleware
                                         ;; content-negotiation
