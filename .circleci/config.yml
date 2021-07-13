@@ -48,25 +48,22 @@ jobs:
     steps:
       - checkout
 
-#      - run:
-#          name: Installing deployment dependencies
-#          command: |
-#           sudo apt-get -y -qq update
-#           sudo apt-get install python3-pip python3-dev build-essential
-#            sudo pip3 install awsebcli
+      - run:
+          name: Installing deployment dependencies
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python3-pip python3-dev build-essential
+            sudo pip3 install awsebcli
 
       - run:
           name: Building Wedding application
           command: |
             lein uberjar
-            ls
             cp target/wedding-0.1.0-SNAPSHOT-standalone.jar wedding.jar
 
       - run:
           name: Deploying
           command: |
-            ls
-            cd target/build
             eb deploy Terkaberedavidaclojure-env
 workflows:
   build:
