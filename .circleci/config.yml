@@ -56,9 +56,16 @@ jobs:
             sudo pip3 install awsebcli
 
       - run:
-          name: Deploy Wedding application
+          name: Deploy Wedding Docker backend
           command: |
             eb deploy Terkaberedavida-env
+
+      - run:
+          name: Deploy Wedding frontend
+          command: |
+            npm run --prefix resources/frontend build
+            aws s3 sync ../frontend/build/ s3://terkaberedavida.cz
+            aws cloudfront create-invalidation --distribution-id E73O8TVBW4WB0 --paths "/*" > /dev/null 2>&1
 
 workflows:
   build:
