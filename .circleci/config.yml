@@ -58,7 +58,8 @@ jobs:
       - run:
           name: Building Wedding application
           command: |
-            sudo cd resources/scripts
+            ls
+            cd resources/scripts
             sudo ./build-uberjar.sh
             sudo ./build-deployable-docker.zip
 
