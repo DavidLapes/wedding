@@ -56,10 +56,8 @@ jobs:
             sudo pip3 install awsebcli
 
       - run:
-          name: Building Wedding application
+          name: Deploy Wedding application
           command: |
-            lein uberjar
-            cp target/wedding-0.1.0-SNAPSHOT-standalone.jar wedding.jar
             eb deploy Terkaberedavida-env
 
 workflows:
