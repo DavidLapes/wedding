@@ -83,7 +83,7 @@ jobs:
 
       - run:
           name: Build React website
-          commend: |
+          command: |
             npm run --prefix resources/frontend build
 
       - run:
