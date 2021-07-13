@@ -6,4 +6,3 @@ cp Dockerfile target/build/Dockerfile
 cp docker-compose.yml target/build/docker-compose.yml
 cp wedding.jar target/build/wedding.jar
 cd target/build
-zip -r wedding.zip .

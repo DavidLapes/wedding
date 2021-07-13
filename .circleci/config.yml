@@ -41,7 +41,33 @@ jobs:
 
       # run tests!
       - run: lein test
+  deploy:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/clojure:lein-2.9.5
+    steps:
+      - checkout
 
+      - run:
+          name: Installing deployment dependencies
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python3-pip python3-dev build-essential
+            sudo pip3 install awsebcli
+
+      - run:
+          name: Building Wedding application
+          command: |
+            sudo cd resources/scripts
+            sudo ./build-uberjar.sh
+            sudo ./build-deployable-docker.zip
+
+      - run:
+          name: Deploying
+          command: |
+            ls
+            cd target/build
+            eb deploy Terkaberedavidaclojure-env
 workflows:
   build:
     jobs:
