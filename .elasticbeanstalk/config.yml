@@ -1,9 +1,9 @@
 branch-defaults:
   master:
-    environment: Terkaberedavidaclojure-env
+    environment: Terkaberedavida-env
 global:
-  application_name: TerkaBereDavidaClojure
+  application_name: TerkaBereDavida
   default_ec2_keyname: XXXXXX
-  default_platform: 64bit Amazon Linux 2017.09 v2.6.2 running Ruby 2.4 (Passenger Standalone)
+  default_platform: Docker running on 64bit Amazon Linux 2/3.4.2
   default_region: eu-west-1
   sc: git

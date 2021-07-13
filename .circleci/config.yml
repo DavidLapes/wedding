@@ -60,8 +60,8 @@ jobs:
           command: |
             lein uberjar
             cp target/wedding-0.1.0-SNAPSHOT-standalone.jar wedding.jar
-            eb init --platform docker-19.03.13-ce --region eu-west-1 TerkaBereDavidaClojure
-            eb deploy Terkaberedavidaclojure-env
+            eb init --platform docker-19.03.13-ce --region eu-west-1 TerkaBereDavida
+            eb deploy Terkaberedavida-env
 
 workflows:
   build:
