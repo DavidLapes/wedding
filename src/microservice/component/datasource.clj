@@ -35,9 +35,7 @@
     (let [datasource (hikari/make-datasource datasource-schema)]
       (timbre/info "Started DataSource component")
       (assoc this :datasource        datasource
-                  :datasource-schema datasource-schema))
-    (assoc this :datasource nil
-                :datasource-schema nil))
+                  :datasource-schema datasource-schema)))
 
   (stop [this]
     (timbre/info "Stopping DataSource component")
