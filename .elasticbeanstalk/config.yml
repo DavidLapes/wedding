@@ -1,8 +1,8 @@
 branch-defaults:
   master:
-    environment: Terkaberedavida-env
+    environment: Terkaberedavidaelbapplication-env
 global:
-  application_name: TerkaBereDavida
+  application_name: TerkaBereDavidaELBApplication
   default_ec2_keyname: XXXXXX
   default_platform: Docker running on 64bit Amazon Linux 2/3.4.2
   default_region: eu-west-1

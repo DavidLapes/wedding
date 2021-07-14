@@ -6,10 +6,10 @@
 
 (def ^:private credentials
   {:username        (get env :WEDDING_DB_USER "postgres")
-   :password        (get env :WEDDING_PASSWORD "password")
+   :password        (get env :WEDDING_DB_PASSWORD "password")
    :database-name   (get env :WEDDING_DB_NAME "wedding_db")
    :server-name     (get env :WEDDING_DB_HOST "localhost")
-   :port-number     (get env :WEDDING_PORT 5432)})
+   :port-number     (get env :WEDDING_DB_PORT 5432)})
 
 (def ^:private additional-options
   {:auto-commit        true
@@ -32,8 +32,7 @@
 
   (start [this]
     (timbre/info "Starting DataSource component")
-    ;;TODO: Fix for AWS
-    #_(let [datasource (hikari/make-datasource datasource-schema)]
+    (let [datasource (hikari/make-datasource datasource-schema)]
       (timbre/info "Started DataSource component")
       (assoc this :datasource        datasource
                   :datasource-schema datasource-schema))

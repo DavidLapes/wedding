@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Deploy Wedding Docker backend
           command: |
-            eb deploy Terkaberedavida-env
+            eb deploy Terkaberedavidaelbapplication-env
 
   deploy-website:
     working_directory: ~/react
