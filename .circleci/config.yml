@@ -68,4 +68,8 @@ workflows:
   build:
     jobs:
       - deploy-backend
+        filters:
+          branches:
+            only:
+              - master
 #     - deploy-website
