@@ -14,8 +14,8 @@
                    :port (:port-number datasource-schema)
                    :subname (str "//" (:server-name datasource-schema) ":" (:port-number datasource-schema) "/" (:database-name datasource-schema))
                    :subprotocol (:adapter datasource-schema)
-                   :user "postgres"
-                   :password "password"}})
+                   :user (:username datasource-schema)
+                   :password (:password datasource-schema)}})
 
 (defrecord Migration [datasource]
   component/Lifecycle
