@@ -1,9 +1,4 @@
-# Clojure CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-clojure/ for more details
-#
 version: 2.1
-
 jobs:
   deploy-backend:
     working_directory: ~/repo
@@ -40,36 +35,7 @@ jobs:
           name: Deploy Wedding Docker backend
           command: |
             eb deploy Terkaberedavidaelbapplication-env
-
-  deploy-website:
-    working_directory: ~/react
-    docker:
-      - image: circleci/node:8
-    steps:
-      - checkout
-
-      - run:
-          name: Install Dependencies
-          command: |
-            npm install --no-optional --prefix resources/frontend
-
-      - run:
-          name: Build React website
-          command: |
-            npm run --prefix resources/frontend build
-
-      - run:
-          name: Deploy Wedding frontend
-          command: |
-            aws s3 sync resources/frontend/build/ s3://terkaberedavida.cz
-            aws cloudfront create-invalidation --distribution-id E73O8TVBW4WB0 --paths "/*" > /dev/null 2>&1
-
 workflows:
   build:
     jobs:
       - deploy-backend
-        filters:
-          branches:
-            only:
-              - master
-#     - deploy-website
