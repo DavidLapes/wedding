@@ -5,10 +5,10 @@
             [taoensso.timbre :as timbre]))
 
 (def ^:private credentials
-  {:username        (get env :WEDDING_DB_USER "postgres")
-   :password        (get env :WEDDING_DB_PASSWORD "password")
-   :database-name   (get env :WEDDING_DB_NAME "wedding_db")
-   :server-name     (get env :WEDDING_DB_HOST "localhost")
+  {:username        (get env :WEDDING_DB_USER "weddinguser")
+   :password        (get env :WEDDING_DB_PASSWORD "zFB>(TbN8!pQy5{[&6g_")
+   :database-name   (get env :WEDDING_DB_NAME "weddingdb")
+   :server-name     (get env :WEDDING_DB_HOST "database-1.czgnb22noqzm.eu-west-1.rds.amazonaws.com")
    :port-number     (get env :WEDDING_DB_PORT 5432)})
 
 (def ^:private additional-options
