@@ -2,12 +2,6 @@
   (:require [wedding.model.guest :as model]
             [clojure.java.jdbc :as jdbc]))
 
-(defn create!
-  "Creates new guest."
-  [datasource data]
-  (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (model/create! connection data)))
-
 (defn update!
   "Updates an existing guest."
   [datasource id data]
@@ -25,3 +19,9 @@
   [datasource id]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (model/delete! connection id)))
+
+(defn rsvp!
+  "Creates RSVP record with a new guest."
+  [datasource data]
+  (jdbc/with-db-transaction [connection {:datasource datasource}]
+    (model/create! connection data)))
