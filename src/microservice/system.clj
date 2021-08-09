@@ -1,6 +1,8 @@
 (ns microservice.system
   (:require [com.stuartsierra.component :as component]
+            [microservice.component.aws-creds-provider :as aws-creds]
             [microservice.component.datasource :as datasource]
+            [microservice.component.email-notification-adapter :as email-notification]
             [microservice.component.handler :as handler]
             [microservice.component.migration :as migration]
             [microservice.component.router :as router]
@@ -16,7 +18,10 @@
   []
   (logging/init-logging)
   (component/system-map
+    :wedding.component/aws-credentials-provider (aws-creds/new-credentials-provider)
     :wedding.component/datasource (datasource/new-datasource)
+    :wedding.component/email-notification-adapter (email-notification/new-email-notification-adapter
+                                                    :wedding.component/aws-credentials-provider)
     :wedding.component/handler (handler/new-handler :wedding.component/router
                                                     :wedding.component/swagger)
     :wedding.component/migration (migration/new-migration :wedding.component/datasource)

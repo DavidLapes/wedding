@@ -1,9 +1,12 @@
 (ns microservice.component.email-notification-adapter
   (:require [com.stuartsierra.component :as component]
             [microservice.component.proto.notification :as proto]
+            [ses-mailer.core :as ses-mailer]
             [taoensso.timbre :as timbre]))
 
-(defrecord EmailNotificationAdapter []
+(def ^:private sender "info@terkaberedavida.cz")
+
+(defrecord EmailNotificationAdapter [aws-credentials-provider]
   component/Lifecycle
   (start [this]
     (timbre/info "Starting EmailNotificationAdapter")
@@ -16,5 +19,19 @@
     (dissoc this :email-notification-adapter))
 
   proto/SNSNotificationAdapter
-  (-notify [data]
+  (-notify [{:keys [recipient subject text] :as data}]
+    (let [creds (-> aws-credentials-provider :provider :credentials)]
+      (ses-mailer/send-email
+        creds
+        sender
+        recipient
+        subject
+        {:text-body text}))
     (timbre/info "Notified!")))
+
+(defn new-email-notification-adapter
+  "Returns instance of EmailNotificationAdapter component."
+  [aws-credentials-provider-ref]
+  (component/using
+    (map->EmailNotificationAdapter {})
+    {:aws-credentials-provider aws-credentials-provider-ref}))

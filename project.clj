@@ -24,6 +24,8 @@
                  [org.slf4j/jul-to-slf4j "1.7.30"]
                  [org.slf4j/jcl-over-slf4j "1.7.30"]
                  [com.stuartsierra/component "1.0.0"]
+                 [ses-mailer "0.0.4" :exclusions [commons-logging
+                                                  com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]]
                  [org.postgresql/postgresql "42.2.18"]
                  [funcool/clojure.jdbc "0.9.0"]
                  [migratus "1.3.3" :exclusions [org.clojure/tools.logging]]
