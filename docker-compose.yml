@@ -2,6 +2,12 @@ version: '3.0'
 services:
   weddingbackend:
     restart: 'always'
+    environment:
+      WEDDING_DB_HOST:      ${WEDDING_DB_HOST}
+      WEDDING_DB_PORT:      ${WEDDING_DB_PORT}
+      WEDDING_DB_NAME:      ${WEDDING_DB_NAME}
+      WEDDING_DB_USER:      ${WEDDING_DB_USER}
+      WEDDING_DB_PASSWORD:  ${WEDDING_DB_PASSWORD}
     ports:
       - '80:5000'
     build:
