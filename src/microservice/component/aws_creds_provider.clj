@@ -1,11 +1,12 @@
 (ns microservice.component.aws-creds-provider
   (:require [com.stuartsierra.component :as component]
+            [environ.core :refer [env]]
             [taoensso.timbre :as timbre]))
 
 (def ^:private credentials
-  {:access-key  "AKIASN2FZSDE5UYORYZ2"
-   :secret-key  "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"
-   :region      :eu-west-1})
+  {:access-key  (get env :aws-access-key)
+   :secret-key  (get env :aws-secret-key)
+   :region      (get env :aws-region)})
 
 (defrecord AWSCredentialsProvider []
   component/Lifecycle
