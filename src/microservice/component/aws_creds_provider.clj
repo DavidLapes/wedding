@@ -4,9 +4,14 @@
             [taoensso.timbre :as timbre]))
 
 (def ^:private credentials
-  {:access-key  (get env :aws-access-key)
-   :secret-key  (get env :aws-secret-key)
-   :region      (get env :aws-region)})
+  (let [map {:access-key  (get env :aws-access-key)
+             :secret-key  (get env :aws-secret-key)
+             :region      (get env :aws-region)}]
+    (println (keys env))
+    (println map)
+    {:access-key  (get env :aws-access-key)
+     :secret-key  (get env :aws-secret-key)
+     :region      (get env :aws-region)}))
 
 (defrecord AWSCredentialsProvider []
   component/Lifecycle
