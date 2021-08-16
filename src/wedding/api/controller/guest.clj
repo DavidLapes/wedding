@@ -5,3 +5,8 @@
   "Creates RSVP record with a new guest."
   [{:keys [ctx/datasource body-params]}]
   (service/rsvp! datasource body-params))
+
+(defn create
+  "Creates new guest."
+  [{:keys [ctx/datasource body-params]}]
+  (service/create! datasource body-params))
