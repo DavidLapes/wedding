@@ -1,7 +1,7 @@
 (ns microservice.component.router
   (:require [com.stuartsierra.component :as component]
             [muuntaja.core :as m]
-            [reitit.coercion.spec :as reitit-spec]
+            [reitit.coercion.schema :as reitit-schema]
             [reitit.ring :as ring]
             [reitit.ring.middleware.parameters :as parameters]
             [reitit.ring.middleware.muuntaja :as muuntaja]
@@ -30,7 +30,7 @@
                      ["/private"
                       {:middleware [authentication/wrap-with-jwt-middleware]}]]]
 
-                   {:data {:coercion   reitit-spec/coercion
+                   {:data {:coercion   reitit-schema/coercion
                            :ctx        {:datasource (:datasource datasource)}
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger

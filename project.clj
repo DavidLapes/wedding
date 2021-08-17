@@ -15,6 +15,7 @@
                  [metosin/reitit-swagger "0.5.13"]
                  [metosin/reitit-swagger-ui "0.5.13"]
                  [metosin/ring-http-response "0.9.2"]
+                 [prismatic/schema "1.1.12"]
                  [ring-logger "1.0.1"]
                  [environ "1.2.0"]
                  [org.slf4j/slf4j-api "1.7.30"]
