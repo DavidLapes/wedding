@@ -20,6 +20,7 @@
 
   proto/SNSNotificationAdapter
   (-notify [{:keys [recipient subject text] :as data}]
+    (timbre/info (str "Preparing notification for: " recipient))
     (let [creds (-> aws-credentials-provider :provider :credentials)]
       (ses-mailer/send-email
         creds
