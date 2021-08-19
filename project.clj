@@ -25,6 +25,7 @@
                  [org.slf4j/jul-to-slf4j "1.7.30"]
                  [org.slf4j/jcl-over-slf4j "1.7.30"]
                  [com.stuartsierra/component "1.0.0"]
+                 [com.stuartsierra/component.repl "0.2.0"]
                  [ses-mailer "0.0.4" :exclusions [commons-logging
                                                   com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]]
                  [org.postgresql/postgresql "42.2.18"]
