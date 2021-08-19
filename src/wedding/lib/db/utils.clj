@@ -37,7 +37,11 @@
   [query filters]
   (reduce
     (fn [query [filter-key filter-value]]
-      (merge-where query [:= filter-key filter-value]))
+      (when (or (= filter-key :limit)
+                (= filter-key :order-limit)
+                (= filter-key :page_number))
+        query
+        (merge-where query [:= filter-key filter-value])))
     query
     filters))
 
@@ -53,11 +57,23 @@
   ([connection query]
    (jdbc/query connection (sql-core/format query))))
 
+(defn common-filter-count-query!
+  "Returns integer result of count query with all common non-nil filters applied."
+  [connection table filters]
+  (let [query (-> (honey/select (sql-core/raw "COUNT(*)"))
+                  (honey/from table)
+                  (apply-filters filters))
+        result (query! connection query)]
+    (if (seq? result)
+      (:count (first result))
+      (:count result))))
+
 (defn common-filter-query!
-  "Returns query with all common non-nil filters applied."
+  "Returns result of query with all common non-nil filters applied."
   [connection table filters]
   (let [query (-> (honey/select :*)
-                  (honey/from table))]
+                  (honey/from table)
+                  (apply-filters filters))]
     (->> (cond-> query
                  (some? (:limit filters)) (lib-pagination/apply-paging-query filters)
                  (some? (:order_column filters)) (lib-order/apply-order-filter filters))
@@ -116,4 +132,5 @@
 (defn get-all!
   "Returns rows for given table with possible filters."
   ([connection table filters]
-   (common-filter-query! connection table filters)))
+   {:data (common-filter-query! connection table filters)
+    :count (common-filter-count-query! connection table filters)}))
