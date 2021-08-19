@@ -9,3 +9,35 @@ CREATE TABLE users (
     PRIMARY KEY (id)
 );
 --;;
+CREATE TABLE guests (
+    id                  SMALLSERIAL,
+    first_name          VARCHAR(32) NOT NULL,
+    middle_name         VARCHAR(32),
+    last_name           VARCHAR(32) NOT NULL,
+    email               VARCHAR(64),
+    phone               VARCHAR(64),
+    state               VARCHAR(64),
+    city                VARCHAR(64),
+    street              VARCHAR(64),
+    descriptive_number  VARCHAR(32),
+    orientation_number  VARCHAR(32),
+    postal_code         VARCHAR(16),
+    rsvp_answered       BOOLEAN NOT NULL DEFAULT FALSE,
+    email_sent          BOOLEAN NOT NULL DEFAULT FALSE,
+    PRIMARY KEY (id)
+);
+--;;
+CREATE TABLE tables (
+    id                  SMALLSERIAL,
+    description         VARCHAR(256),
+    number              SMALLINT UNIQUE NOT NULL,
+    PRIMARY KEY (id)
+);
+--;;
+CREATE TABLE guests_tables (
+    table_id            SMALLINT NOT NULL,
+    guest_id            SMALLINT UNIQUE NOT NULL,
+    FOREIGN KEY (table_id) REFERENCES tables(id),
+    FOREIGN KEY (guest_id) REFERENCES guests(id)
+);
+--;;
