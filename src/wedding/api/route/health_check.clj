@@ -5,7 +5,8 @@
 
 (def routes
   ["/health-check"
-   {:get {:summary "Checks the health of the application"
+   {:swagger {:tags ["Health"]}
+    :get {:summary "Checks the health of the application"
           :responses {200 {:body MessageResponse}}
           :handler (wrap-with-context
                      (fn [_]
