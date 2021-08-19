@@ -14,8 +14,9 @@
    :last_name   s/Str})
 
 (s/defschema UpdateGuest
-  {:first_name  s/Str
-   :last_name   s/Str})
+  {:first_name  (s/maybe s/Str)
+   :last_name   (s/maybe s/Str)
+   :table_id    (s/maybe s/Int)})
 
 (s/defschema GuestOutput
   {:id                  s/Int
@@ -31,7 +32,8 @@
    :descriptive_number  (s/maybe s/Str)
    :postal_code         (s/maybe s/Str)
    :rsvp_answered       s/Bool
-   :email_sent          s/Bool})
+   :email_sent          s/Bool
+   :table_id            (s/maybe s/Int)})
 
 (s/defschema GuestListOutput
   {:data  [GuestOutput]

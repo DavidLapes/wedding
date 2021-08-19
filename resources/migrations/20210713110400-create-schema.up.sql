@@ -9,6 +9,13 @@ CREATE TABLE users (
     PRIMARY KEY (id)
 );
 --;;
+CREATE TABLE tables (
+    id                  SMALLSERIAL,
+    description         VARCHAR(256),
+    number              SMALLINT UNIQUE NOT NULL,
+    PRIMARY KEY (id)
+);
+--;;
 CREATE TABLE guests (
     id                  SMALLSERIAL,
     first_name          VARCHAR(32) NOT NULL,
@@ -24,20 +31,8 @@ CREATE TABLE guests (
     postal_code         VARCHAR(16),
     rsvp_answered       BOOLEAN NOT NULL DEFAULT FALSE,
     email_sent          BOOLEAN NOT NULL DEFAULT FALSE,
-    PRIMARY KEY (id)
-);
---;;
-CREATE TABLE tables (
-    id                  SMALLSERIAL,
-    description         VARCHAR(256),
-    number              SMALLINT UNIQUE NOT NULL,
-    PRIMARY KEY (id)
-);
---;;
-CREATE TABLE guests_tables (
-    table_id            SMALLINT NOT NULL,
-    guest_id            SMALLINT UNIQUE NOT NULL,
-    FOREIGN KEY (table_id) REFERENCES tables(id) ON DELETE CASCADE,
-    FOREIGN KEY (guest_id) REFERENCES guests(id) ON DELETE CASCADE
+    table_id            SMALLINT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (table_id) REFERENCES tables (id) ON DELETE SET NULL
 );
 --;;
