@@ -17,7 +17,7 @@
     (ok table)))
 
 (defn get
-  "Returns list of guests."
+  "Returns list of tables."
   [{:keys [ctx]}]
   (let [tables (service/get! (:datasource ctx))]
     (ok tables)))
@@ -28,3 +28,10 @@
   (let [id     (-> parameters :path :id)
         table (service/get-by-id! (:datasource ctx) id)]
     (ok table)))
+
+(defn delete
+  "Deletes table by id."
+  [{:keys [ctx parameters]}]
+  (let [id (-> parameters :path :id)]
+    (service/delete! (:datasource ctx) id)
+    (ok)))
