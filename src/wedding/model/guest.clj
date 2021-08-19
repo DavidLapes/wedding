@@ -27,8 +27,10 @@
 
 (defn get-all!
   "Returns all guests."
-  [connection filters]
-  (query/get-all! connection table-name filters))
+  ([connection]
+   (get-all! connection {}))
+  ([connection filters]
+   (query/get-all! connection table-name filters)))
 
 (defn delete!
   "Deletes guest by id."

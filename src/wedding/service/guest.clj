@@ -15,6 +15,12 @@
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (model/update! connection id data)))
 
+(defn get!
+  "Returns list of guests."
+  [datasource]
+  (jdbc/with-db-connection [connection {:datasource datasource}]
+    (model/get-all! connection)))
+
 (defn get-by-id!
   "Returns guest by given id."
   [datasource id]
