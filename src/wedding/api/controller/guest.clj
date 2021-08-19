@@ -33,3 +33,10 @@
   (let [id     (-> parameters :path :id)
         guest (service/get-by-id! (:datasource ctx) id)]
     (ok guest)))
+
+(defn delete
+  "Deletes guest by id."
+  [{:keys [ctx parameters]}]
+  (let [id (-> parameters :path :id)]
+    (service/delete! (:datasource ctx) id)
+    (ok)))
