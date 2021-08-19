@@ -37,7 +37,7 @@ CREATE TABLE tables (
 CREATE TABLE guests_tables (
     table_id            SMALLINT NOT NULL,
     guest_id            SMALLINT UNIQUE NOT NULL,
-    FOREIGN KEY (table_id) REFERENCES tables(id),
-    FOREIGN KEY (guest_id) REFERENCES guests(id)
+    FOREIGN KEY (table_id) REFERENCES tables(id) ON DELETE CASCADE,
+    FOREIGN KEY (guest_id) REFERENCES guests(id) ON DELETE CASCADE
 );
 --;;

@@ -12,10 +12,10 @@
   "Creates new guest."
   [{:keys [ctx body-params]}]
   (let [guest (service/create! (:datasource ctx) body-params)]
-    (created "/api/private" guest)))
+    (created "/api/private/guests" guest)))
 
 (defn update
-  "Updates new guest."
+  "Updates guest."
   [{:keys [ctx parameters body-params]}]
   (let [id    (-> parameters :path :id)
         guest (service/update! (:datasource ctx) id body-params)]
@@ -31,5 +31,5 @@
   "Returns guest by id."
   [{:keys [ctx parameters]}]
   (let [id     (-> parameters :path :id)
-        guests (service/get-by-id! (:datasource ctx) id)]
-    (ok guests)))
+        guest (service/get-by-id! (:datasource ctx) id)]
+    (ok guest)))
