@@ -5,8 +5,9 @@
 
 (def routes
   ["/auth"
+   {:swagger {:tags ["Authentication"]}}
    ["/sign-in"
-    {:post {:summary "Authenticate against Wedding API"
+    {:post {:summary "Authenticates against Wedding API"
             :responses {200 {:body AuthenticationToken}}
             :parameters {:body SignIn}
             :handler (wrap-with-context
