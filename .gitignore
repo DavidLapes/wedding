@@ -2,4 +2,5 @@
 *.iml
 /target
 .nrepl-port
+.lein-repl-history
 wedding.jar
