@@ -1,8 +1,8 @@
 (ns microservice.component.web-server
   (:require [com.stuartsierra.component :as component]
-            [environ.core :refer [env]]
             [org.httpkit.server :as server]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [wedding.lib.env :refer [get-env]]))
 
 (defrecord WebServer [handler port thread-count]
   component/Lifecycle
@@ -27,6 +27,6 @@
   "Returns instance of WebServer component."
   [handler-ref]
   (component/using
-    (map->WebServer {:port         (get env :wedding-web-server-port 5000)
-                     :thread-count (get env :wedding-web-server-thread-count 8)})
+    (map->WebServer {:port         (get-env :wedding-web-server-port)
+                     :thread-count (get-env :wedding-web-server-thread-count)})
     {:handler handler-ref}))

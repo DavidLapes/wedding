@@ -1,17 +1,18 @@
 (ns microservice.component.aws-creds-provider
   (:require [com.stuartsierra.component :as component]
-            [environ.core :refer [env]]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [wedding.lib.env :refer [get-env]]))
 
 (def ^:private credentials
-  (let [map {:access-key  (get env :aws-access-key)
-             :secret-key  (get env :aws-secret-key)
-             :region      (get env :aws-region)}]
-    (println (keys env))
+  (let [map {:access-key  (get-env :aws-access-key)
+             :secret-key  (get-env :aws-secret-key)
+             :region      (get-env :aws-region)}]
+    ;;TODO: Remove after Docker env vars fix
+    (println (keys environ.core/env))
     (println map)
-    {:access-key  (get env :aws-access-key)
-     :secret-key  (get env :aws-secret-key)
-     :region      (get env :aws-region)}))
+    {:access-key  (get-env :aws-access-key)
+     :secret-key  (get-env :aws-secret-key)
+     :region      (get-env :aws-region)}))
 
 (defrecord AWSCredentialsProvider []
   component/Lifecycle

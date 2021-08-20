@@ -1,15 +1,15 @@
 (ns microservice.component.datasource
   (:require [com.stuartsierra.component :as component]
-            [environ.core :refer [env]]
             [hikari-cp.core :as hikari]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [wedding.lib.env :refer [get-env]]))
 
 (def ^:private credentials
-  {:username        (get env :wedding-db-user)
-   :password        (get env :wedding-db-password)
-   :database-name   (get env :wedding-db-name)
-   :server-name     (get env :wedding-db-host)
-   :port-number     (get env :wedding-db-port)})
+  {:username        (get-env :wedding-db-user)
+   :password        (get-env :wedding-db-password)
+   :database-name   (get-env :wedding-db-name)
+   :server-name     (get-env :wedding-db-host)
+   :port-number     (get-env :wedding-db-port)})
 
 (def ^:private additional-options
   {:auto-commit        true

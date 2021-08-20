@@ -2,14 +2,14 @@
   (:require [buddy.auth.backends :as backends]
             [buddy.sign.jwt :as jwt]
             [clojure.java.jdbc :as jdbc]
-            [environ.core :refer [env]]
             [wedding.auth.crypto :as crypto]
+            [wedding.lib.env :refer [get-env]]
             [wedding.model.user :as model]
             [wedding.service.user :as user-service])
   (:import (java.time LocalDateTime)))
 
 (def jwt-secret ^{:doc "Secret for token signing"}
-  (get env :jwt-secret "development-secret"))
+  (get-env :wedding-jwt-secret))
 
 (def auth-token-expiration-days 14)
 
