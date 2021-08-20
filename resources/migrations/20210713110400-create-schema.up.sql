@@ -13,6 +13,7 @@ CREATE TABLE tables (
     id                  SMALLSERIAL,
     description         VARCHAR(256),
     number              SMALLINT UNIQUE NOT NULL,
+    capacity            SMALLINT NOT NULL,
     PRIMARY KEY (id)
 );
 --;;
