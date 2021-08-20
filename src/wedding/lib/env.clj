@@ -7,14 +7,22 @@
     (println (get env key))))
 
 (def ^:private env-config
-  {:aws-access-key                  {:required? true}
-   :aws-secret-key                  {:required? true}
-   :aws-region                      {:required? true}
-   :wedding-db-host                 {:required? true}
-   :wedding-db-port                 {:required? true}
-   :wedding-db-name                 {:required? true}
-   :wedding-db-user                 {:required? true}
-   :wedding-db-password             {:required? true}
+  {:aws-access-key                  {:required? true
+                                     :default "AKIASN2FZSDE5UYORYZ2"}
+   :aws-secret-key                  {:required? true
+                                     :default "W/hfaD2gmFZuS5Jym706O5ohD/t27J4hdAWLcfdP"}
+   :aws-region                      {:required? true
+                                     :default "eu-west-1"}
+   :wedding-db-host                 {:required? true
+                                     :default "database-1.czgnb22noqzm.eu-west-1.rds.amazonaws.com"}
+   :wedding-db-port                 {:required? true
+                                     :default 5432}
+   :wedding-db-name                 {:required? true
+                                     :default "weddingdb"}
+   :wedding-db-user                 {:required? true
+                                     :default "weddinguser"}
+   :wedding-db-password             {:required? true
+                                     "zFB>(TbN8!pQy5{[&6g_"}
    :wedding-web-server-port         {:required? false
                                      :default   5000}
    :wedding-web-server-thread-count {:required? false
