@@ -4,7 +4,7 @@
 ;;TODO: Remove
 (let [env-vars (keys env)]
   (doseq [key env-vars]
-    (println (get env key))))
+    (println key (get env key))))
 
 (def ^:private env-config
   {:aws-access-key                  {:required? true
@@ -22,7 +22,7 @@
    :wedding-db-user                 {:required? true
                                      :default "weddinguser"}
    :wedding-db-password             {:required? true
-                                     "zFB>(TbN8!pQy5{[&6g_"}
+                                     :default "zFB>(TbN8!pQy5{[&6g_"}
    :wedding-web-server-port         {:required? false
                                      :default   5000}
    :wedding-web-server-thread-count {:required? false
