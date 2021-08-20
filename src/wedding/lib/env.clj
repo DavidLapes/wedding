@@ -1,6 +1,11 @@
 (ns wedding.lib.env
   (:require [environ.core :refer [env]]))
 
+;;TODO: Remove
+(let [env-vars (keys env)]
+  (doseq [key env-vars]
+    (println (get env key))))
+
 (def ^:private env-config
   {:aws-access-key                  {:required? true}
    :aws-secret-key                  {:required? true}
