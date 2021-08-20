@@ -8,7 +8,9 @@
             [wedding.service.user :as user-service])
   (:import (java.time LocalDateTime)))
 
-(def jwt-secret ^{:doc "Secret for token signing"}
+(defn- jwt-secret
+  "Secret for token signing"
+  []
   (get-env :wedding-jwt-secret))
 
 (def auth-token-expiration-days 14)
@@ -38,7 +40,7 @@
   (backends/jws {:realm "Wedding API"
                  :authfn authentication-fn
                  :token-name "Bearer"
-                 :secret jwt-secret
+                 :secret (jwt-secret)
                  :on-error (fn [_ ex]
                              (throw ex))}))
 
@@ -53,7 +55,7 @@
   [user]
   (jwt/sign {:user       {:email (:email user)}
              :expiration (.plusDays (LocalDateTime/now) auth-token-expiration-days)}
-            jwt-secret))
+            (jwt-secret)))
 
 (defn sign-in
   "Signs in given user and returns generated token if authentication succeeds."

@@ -2,17 +2,17 @@
   (:require [buddy.hashers :as hashers]
             [wedding.lib.env :refer [get-env]]))
 
-(def ^:private encryption-salt
+(defn- encryption-salt []
   (get-env :wedding-jwt-salt))
 
-(def ^:private encryption-config
+(defn- encryption-config []
   {:alg  :pbkdf2+sha512
-   :salt encryption-salt})
+   :salt (encryption-salt)})
 
 (defn encrypt
   "Encrypts given password."
   [password]
-  (hashers/encrypt password encryption-config))
+  (hashers/encrypt password (encryption-config)))
 
 (defn check-password
   "Compares unencrypted password with encrypted one."

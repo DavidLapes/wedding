@@ -3,23 +3,17 @@
             [taoensso.timbre :as timbre]
             [wedding.lib.env :refer [get-env]]))
 
-(def ^:private credentials
-  (let [map {:access-key  (get-env :aws-access-key)
-             :secret-key  (get-env :aws-secret-key)
-             :region      (get-env :aws-region)}]
-    ;;TODO: Remove after Docker env vars fix
-    (println (keys environ.core/env))
-    (println map)
-    {:access-key  (get-env :aws-access-key)
-     :secret-key  (get-env :aws-secret-key)
-     :region      (get-env :aws-region)}))
+(defn- credentials []
+  {:access-key  (get-env :aws-access-key)
+   :secret-key  (get-env :aws-secret-key)
+   :region      (get-env :aws-region)})
 
 (defrecord AWSCredentialsProvider []
   component/Lifecycle
   (start [this]
     (timbre/info "Starting AWSCredentialsProvider")
     (timbre/info "Started AWSCredentialsProvider")
-    (assoc this :provider {:credentials credentials}))
+    (assoc this :provider {:credentials (credentials)}))
 
   (stop [this]
     (timbre/info "Stopping AWSCredentialsProvider")
