@@ -1,17 +1,17 @@
 (ns microservice.component.datasource
   (:require [com.stuartsierra.component :as component]
+            [environ.core :refer [env]]
             [hikari-cp.core :as hikari]
-            [taoensso.timbre :as timbre]
-            [wedding.lib.env :refer [get-env]]))
+            [taoensso.timbre :as timbre]))
 
-(defn- credentials []
-  {:username        (get-env :wedding-db-user)
-   :password        (get-env :wedding-db-password)
-   :database-name   (get-env :wedding-db-name)
-   :server-name     (get-env :wedding-db-host)
-   :port-number     (get-env :wedding-db-port)})
+(def ^:private credentials
+  {:username        (get env :wedding-db-user)
+   :password        (get env :wedding-db-password)
+   :database-name   (get env :wedding-db-name)
+   :server-name     (get env :wedding-db-host)
+   :port-number     (get env :wedding-db-port)})
 
-(defn- additional-options []
+(def ^:private additional-options
   {:auto-commit        true
    :read-only          false
    :connection-timeout 30000
@@ -25,15 +25,13 @@
    :register-mbeans    false})
 
 (def ^:private datasource-schema
-  (merge (additional-options) (credentials)))
+  (merge additional-options credentials))
 
 (defrecord DataSource []
   component/Lifecycle
 
   (start [this]
     (timbre/info "Starting DataSource component")
-    (println (keys environ.core/env))
-    (println (credentials))
     (let [datasource (hikari/make-datasource datasource-schema)]
       (timbre/info "Started DataSource component")
       (assoc this :datasource        datasource
