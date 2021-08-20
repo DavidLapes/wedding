@@ -33,15 +33,20 @@
         (throw (ex-info (str "Missing required ENVIRONMENT VARIABLE value for " key "") {:cause :environment-variable-not-set})))
       result)))
 
-(def ^:private envs
-  (reduce-kv
-    (fn [map key config]
-      (if (valid-config? config)
-        (let [value (get-env-value key config)]
-          (assoc map key value))
-        (throw (ex-info (str "Invalid ENVIRONMENT VARIABLE configuration " key " of config " config) {:cause :environment-variable-misconfiguration}))))
-    {}
-    env-config))
+(def ^:private ^:dynamic envs nil)
 
 (defn get-env [key]
   (key envs))
+
+(defn initialize-environments []
+  (alter-var-root
+    #'envs
+    (fn [_]
+      (reduce-kv
+        (fn [map key config]
+          (if (valid-config? config)
+            (let [value (get-env-value key config)]
+              (assoc map key value))
+            (throw (ex-info (str "Invalid ENVIRONMENT VARIABLE configuration " key " of config " config) {:cause :environment-variable-misconfiguration}))))
+        {}
+        env-config))))
