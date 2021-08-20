@@ -22,14 +22,14 @@ jobs:
           key: v1-dependencies-{{ checksum "project.clj" }}
 
       # run tests!
-      - run: lein test
+      #- run: lein test
 
-      - run:
-          name: Installing deployment dependencies
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip3 install awsebcli
+      #- run:
+          #name: Installing deployment dependencies
+          #command: |
+            #sudo apt-get -y -qq update
+            #sudo apt-get install python3-pip python3-dev build-essential
+            #sudo pip3 install awsebcli
 
       #- run:
       #    name: Deploy Wedding Docker backend

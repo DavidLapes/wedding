@@ -1,6 +1,6 @@
 (ns wedding.service.user
-  (:require [wedding.model.user :as model]
-            [clojure.java.jdbc :as jdbc]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [wedding.model.user :as model]))
 
 (defn create!
   "Creates new user."

@@ -1,7 +1,8 @@
 (ns microservice.component.router
   (:require [com.stuartsierra.component :as component]
             [muuntaja.core :as m]
-            [reitit.coercion.spec :as reitit-spec]
+            [reitit.coercion :as reitit-coercion]
+            [reitit.coercion.schema :as reitit-schema]
             [reitit.ring :as ring]
             [reitit.ring.middleware.parameters :as parameters]
             [reitit.ring.middleware.muuntaja :as muuntaja]
@@ -10,6 +11,7 @@
             [ring.logger :as logger]
             [taoensso.timbre :as timbre]
             [wedding.api.route.health-check :as health-check]
+            [wedding.api.route.private.guest :as guest-private]
             [wedding.api.route.public.auth :as auth]
             [wedding.auth.middleware :as authentication]))
 
@@ -28,9 +30,10 @@
                       auth/routes]
 
                      ["/private"
-                      {:middleware [authentication/wrap-with-jwt-middleware]}]]]
+                      {:middleware [authentication/wrap-with-jwt-middleware]}
+                      guest-private/routes]]]
 
-                   {:data {:coercion   reitit-spec/coercion
+                   {:data {:coercion   reitit-schema/coercion
                            :ctx        {:datasource (:datasource datasource)}
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger

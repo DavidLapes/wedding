@@ -1,45 +1,43 @@
 (ns dev-user
-  (:require [com.stuartsierra.component :as component]
-            [microservice.system :as system]
-            [taoensso.timbre :as timbre]))
+  (:require [com.stuartsierra.component.repl :as repl]
+            [microservice.system :refer [make-system]]
+            [taoensso.timbre :as timbre])
+  (:import (clojure.lang IDeref)))
 
-(def ^:private ^:dynamic
-  ^{:doc "Contains current component system state for dev purposes"}
-  system nil)
+(repl/set-init
+  (fn [& args]
+    (make-system)))
 
-(def ^:private
-  ^{:doc "Starts the component system"}
-  start-system #'component/start)
+(def ^:private system
+  ^{:doc "Provides access to the current system components"}
+  (reify IDeref
+    (deref [this]
+      repl/system)))
 
-(def ^:private
-  ^{:doc "Stops the component system"}
-  stop-system #'component/stop)
-
-(defn- start
+(defn reset
+  "Reset the system and reload code changes"
   []
-  "Starts Wedding application."
-  (when-not system
-    (timbre/info "Starting Wedding application")
-    (let [new-system (start-system (system/make-system))]
-      (alter-var-root #'system (constantly new-system))
-      (timbre/info "Started Wedding application")
-      :ok)))
-
-(defn- stop
-  "Stops Wedding application."
-  []
-  (when system
-    (timbre/info "Stopping Wedding application")
-    (stop-system system)
-    (alter-var-root #'system (constantly nil))
-    (timbre/info "Stopped Wedding application")
-    :stop))
-
-(defn- reset
-  []
-  "Resets Wedding application."
   (timbre/info "Re-starting Wedding application")
-  (stop)
-  (start)
+  (repl/reset)
   (timbre/info "Re-started Wedding application")
   :reset)
+
+(defn start
+  "Start the system"
+  []
+  (timbre/info "Starting Wedding application")
+  (repl/start)
+  (timbre/info "Started Wedding application")
+  :start)
+
+(defn stop
+  "Stop the system"
+  []
+  (timbre/info "Stopping Wedding application")
+  (repl/stop)
+  (timbre/info "Stopped Wedding application")
+  :stop)
+
+(comment
+
+  (def datasource (-> @system :wedding.component/datasource :datasource)))

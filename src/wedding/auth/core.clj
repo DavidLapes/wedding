@@ -8,8 +8,8 @@
             [wedding.service.user :as user-service])
   (:import (java.time LocalDateTime)))
 
-(def jwt-secret ^{:doc "Secret for token signing"}
-  (get env :JWT_SECRET "development-secret"))
+(def ^:private jwt-secret
+  (get env :wedding-jwt-secret "development-secret"))
 
 (def auth-token-expiration-days 14)
 

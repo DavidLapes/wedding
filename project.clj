@@ -15,6 +15,7 @@
                  [metosin/reitit-swagger "0.5.13"]
                  [metosin/reitit-swagger-ui "0.5.13"]
                  [metosin/ring-http-response "0.9.2"]
+                 [prismatic/schema "1.1.12"]
                  [ring-logger "1.0.1"]
                  [environ "1.2.0"]
                  [org.slf4j/slf4j-api "1.7.30"]
@@ -24,6 +25,9 @@
                  [org.slf4j/jul-to-slf4j "1.7.30"]
                  [org.slf4j/jcl-over-slf4j "1.7.30"]
                  [com.stuartsierra/component "1.0.0"]
+                 [com.stuartsierra/component.repl "0.2.0"]
+                 [ses-mailer "0.0.4" :exclusions [commons-logging
+                                                  com.fasterxml.jackson.dataformat/jackson-dataformat-cbor]]
                  [org.postgresql/postgresql "42.2.18"]
                  [funcool/clojure.jdbc "0.9.0"]
                  [migratus "1.3.3" :exclusions [org.clojure/tools.logging]]

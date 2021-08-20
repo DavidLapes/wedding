@@ -5,11 +5,11 @@
             [taoensso.timbre :as timbre]))
 
 (def ^:private credentials
-  {:username        (get env :WEDDING_DB_USER "weddinguser")
-   :password        (get env :WEDDING_DB_PASSWORD "zFB>(TbN8!pQy5{[&6g_")
-   :database-name   (get env :WEDDING_DB_NAME "weddingdb")
-   :server-name     (get env :WEDDING_DB_HOST "database-1.czgnb22noqzm.eu-west-1.rds.amazonaws.com")
-   :port-number     (get env :WEDDING_DB_PORT 5432)})
+  {:username        (get env :wedding-db-user)
+   :password        (get env :wedding-db-password)
+   :database-name   (get env :wedding-db-name)
+   :server-name     (get env :wedding-db-host)
+   :port-number     (get env :wedding-db-port)})
 
 (def ^:private additional-options
   {:auto-commit        true

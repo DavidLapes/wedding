@@ -1,7 +1,7 @@
 (ns wedding.core
   (:gen-class)
-  (:require [microservice.system :as system]
-            [com.stuartsierra.component :refer [start]]
+  (:require [com.stuartsierra.component :refer [start]]
+            [microservice.system :as system]
             [taoensso.timbre :as timbre]))
 
 (defn -main
