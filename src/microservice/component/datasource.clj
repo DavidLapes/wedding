@@ -32,6 +32,8 @@
 
   (start [this]
     (timbre/info "Starting DataSource component")
+    (println (keys environ.core/env))
+    (println credentials)
     (let [datasource (hikari/make-datasource datasource-schema)]
       (timbre/info "Started DataSource component")
       (assoc this :datasource        datasource
