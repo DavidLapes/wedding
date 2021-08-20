@@ -12,14 +12,12 @@
             [microservice.component.proto.impl.date]
             [microservice.component.proto.impl.encoding]
             [microservice.component.proto.impl.pg_json]
-            [wedding.lib.env :refer [initialize-environments]]
             [taoensso.timbre :as timbre]))
 
 (defn make-system
   "Creates new Sierra Component system map."
   []
   (logging/init-logging)
-  (initialize-environments)
   (component/system-map
     :wedding.component/aws-credentials-provider (aws-creds/new-credentials-provider)
     :wedding.component/datasource (datasource/new-datasource)
