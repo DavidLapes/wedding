@@ -14,7 +14,7 @@ services:
       - WEDDING_DB_USER
       - WEDDING_DB_PASSWORD
     ports:
-      - '90:5000'
+      - '80:5000'
     build:
       context: .
       dockerfile: Dockerfile
