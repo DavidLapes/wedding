@@ -15,7 +15,7 @@
             [wedding.api.route.public.auth :as auth]
             [wedding.auth.middleware :as authentication]))
 
-(defrecord Router [datasource swagger]
+(defrecord Router [email-notification-adapter datasource swagger]
   component/Lifecycle
 
   (start [this]
@@ -34,7 +34,8 @@
                       guest-private/routes]]]
 
                    {:data {:coercion   reitit-schema/coercion
-                           :ctx        {:datasource (:datasource datasource)}
+                           :ctx        {:datasource (:datasource datasource)
+                                        :notification-adapter {:email (:email-notification-adapter email-notification-adapter)}}
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger
                                         logger/wrap-with-logger
@@ -63,8 +64,9 @@
 
 (defn new-router
   "Returns instance of Router component."
-  [datasource-ref swagger-ref]
+  [datasource-ref email-notification-adapter-ref swagger-ref]
   (component/using
     (map->Router {})
-    {:datasource datasource-ref
-     :swagger    swagger-ref}))
+    {:datasource                  datasource-ref
+     :email-notification-adapter  email-notification-adapter-ref
+     :swagger                     swagger-ref}))

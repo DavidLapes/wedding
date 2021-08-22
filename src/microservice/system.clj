@@ -27,6 +27,7 @@
                                                     :wedding.component/swagger)
     :wedding.component/migration (migration/new-migration :wedding.component/datasource)
     :wedding.component/router (router/new-router :wedding.component/datasource
+                                                 :wedding.component/email-notification-adapter
                                                  :wedding.component/swagger)
     :wedding.component/swagger (swagger/new-swagger-handler)
     :wedding.component/web-server (web-server/new-webserver :wedding.component/handler)))
