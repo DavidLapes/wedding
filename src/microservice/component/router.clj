@@ -8,6 +8,7 @@
             [reitit.ring.middleware.exception :as exception]
             [reitit.ring.coercion :as coercion]
             [ring.logger :as logger]
+            [ring.middleware.cors :refer [wrap-cors]]
             [taoensso.timbre :as timbre]
             [wedding.api.route.health-check :as health-check]
             [wedding.api.route.private.guest :as guest-private]
@@ -15,6 +16,12 @@
             [wedding.api.route.public.auth :as auth-public]
             [wedding.api.route.public.guest :as guest-public]
             [wedding.auth.middleware :as authentication]))
+
+(defn cors-middleware [handler]
+  (wrap-cors
+    handler
+    :access-control-allow-origin [#"http://localhost:3000"]
+    :access-control-allow-methods [:get :put :post :delete :patch]))
 
 (defrecord Router [email-notification-adapter datasource swagger]
   component/Lifecycle
@@ -42,6 +49,8 @@
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger
                                         logger/wrap-with-logger
+                                        ;; ring cors middleware
+                                        cors-middleware
                                         ;; query-params & form-params
                                         parameters/parameters-middleware
                                         ;; content-negotiation
