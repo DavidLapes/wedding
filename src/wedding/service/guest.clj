@@ -1,6 +1,9 @@
 (ns wedding.service.guest
   (:require [clojure.java.jdbc :as jdbc]
-            [wedding.model.guest :as model]))
+            [microservice.component.proto.notification :refer [-notify]]
+            [taoensso.timbre :as timbre]
+            [wedding.model.guest :as model]
+            [wedding.lib.email.template :as template]))
 
 (defn create!
   "Creates new guest."
@@ -35,6 +38,51 @@
 
 (defn rsvp!
   "Creates RSVP record with a new guest."
-  [datasource data]
+  [datasource email-notification-adapter id data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (model/create! connection data)))
+    (let [email (:email data)
+          guest-record (model/get-by-id! connection id)
+          notify-options (template/rsvp-template email guest-record)
+          data (merge data
+                      {:rsvp_answered true})]
+      (if (:rsvp_answered guest-record)
+        (throw (ex-info (str "RSVP record for given guest ID - " id " - already exists") {:cause :rsvp-for-guest-already-answered}))
+        (model/update! connection id data))
+      (try
+        (when (some? email)
+          (timbre/info "Preparing notification for guest ID: " id)
+          (-notify email-notification-adapter notify-options)
+          (timbre/info (str "Disabling additional RSVP forms for guest ID: " id))
+          (model/update! connection id {:email_sent true}))
+        (timbre/info (str "Created RSVP record for guest ID: " id))
+        :success
+        (catch Exception e
+          (timbre/error "Creation of RSVP has FAILED")
+          (jdbc/db-set-rollback-only! connection)
+          (timbre/error e)
+          :failed)))))
+
+(comment
+
+  (require '[dev-user :as dev])
+
+  (def datasource (-> @dev/system :wedding.component/datasource :datasource))
+  (def email-notification-adapter (-> @dev/system :wedding.component/email-notification-adapter ))
+
+  (rsvp! datasource
+         email-notification-adapter
+         3
+         {:state              "Pragueland"
+          :city               "Prague"
+          :street             "Pragueish"
+          :orientation_number "878"
+          :descriptive_number "12"
+          :postal_code        "12345"
+          :accommodation      true
+          :email              "terkaborkovcova@gmail.com"
+          :phone              "+420123456789"})
+
+  (def result
+    (-notify email-notification-adapter {:recipient  "dave.lapes@gmail.com"
+                                         :subject    "Welcome"
+                                         :text       "Welcome, here!"})))

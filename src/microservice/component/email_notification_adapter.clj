@@ -19,16 +19,17 @@
     (dissoc this :email-notification-adapter))
 
   proto/SNSNotificationAdapter
-  (-notify [{:keys [recipient subject text] :as data}]
+  (-notify [this {:keys [recipient subject text]}]
     (timbre/info (str "Preparing notification for: " recipient))
-    (let [creds (-> aws-credentials-provider :provider :credentials)]
-      (ses-mailer/send-email
-        creds
-        sender
-        recipient
-        subject
-        {:text-body text}))
-    (timbre/info "Notified!")))
+    (let [creds (-> aws-credentials-provider :provider :credentials)
+          message-id (ses-mailer/send-email
+                   creds
+                   sender
+                   recipient
+                   subject
+                   {:text-body text})]
+      (timbre/info "Sent SES notification with message id " (.toString message-id))
+      (timbre/info "Notified!"))))
 
 (defn new-email-notification-adapter
   "Returns instance of EmailNotificationAdapter component."

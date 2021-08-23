@@ -8,7 +8,7 @@
   (fn [& args]
     (make-system)))
 
-(def ^:private system
+(def system
   ^{:doc "Provides access to the current system components"}
   (reify IDeref
     (deref [this]
@@ -37,7 +37,3 @@
   (repl/stop)
   (timbre/info "Stopped Wedding application")
   :stop)
-
-(comment
-
-  (def datasource (-> @system :wedding.component/datasource :datasource)))

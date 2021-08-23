@@ -6,7 +6,8 @@
 (defn rsvp
   "Creates RSVP record with a new guest."
   [{:keys [ctx body-params]}]
-  (service/rsvp! (:datasource ctx) body-params))
+  (let [email-notification-adapter (-> ctx :notification-adapter :email)]
+    (service/rsvp! (:datasource ctx) email-notification-adapter body-params)))
 
 (defn create
   "Creates new guest."
