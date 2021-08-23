@@ -11,20 +11,20 @@
    :accommodation       s/Bool
    :email               (s/maybe s/Str)
    ;;TODO: Phone is not optional, change it!
-   :phone               (s/maybe s/Str)})
+   :phone               s/Str})
 
 (s/defschema CreateGuest
-  {:first_name            s/Str
-   :last_name             s/Str
-   (s/maybe :middle_name) s/Str
-   :greeting_name         s/Str
-   (s/maybe :table_id)    s/Int})
+  {:first_name                    s/Str
+   :last_name                     s/Str
+   (s/optional-key :middle_name)  s/Str
+   :greeting_name                 s/Str
+   (s/optional-key :table_id)     s/Int})
 
 (s/defschema UpdateGuest
-  {(s/maybe :first_name)    s/Str
-   (s/maybe :last_name)     s/Str
-   (s/maybe :table_id)      s/Int
-   (s/maybe :greeting_name) s/Str})
+  {(s/optional-key :first_name)    s/Str
+   (s/optional-key :last_name)     s/Str
+   (s/optional-key :table_id)      s/Int
+   (s/optional-key :greeting_name) s/Str})
 
 (s/defschema GuestOutput
   {:id                  s/Int
