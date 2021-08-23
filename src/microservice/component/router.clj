@@ -1,6 +1,7 @@
 (ns microservice.component.router
   (:require [com.stuartsierra.component :as component]
             [microservice.component.middleware.cors :as cors]
+            [microservice.component.middleware.exception :as exception]
             [muuntaja.core :as m]
             [reitit.coercion.schema :as reitit-schema]
             [reitit.ring :as ring]
@@ -51,8 +52,7 @@
                                         ;; encoding response body
                                         muuntaja/format-response-middleware
                                         ;; exception handling
-                                        ;;TODO Error & Exception handling
-                                        ;;exception/exception-middleware
+                                        exception/exception-middleware
                                         ;; decoding request body
                                         muuntaja/format-request-middleware
                                         ;; coercing response body
