@@ -16,7 +16,7 @@
 (s/defschema CreateGuest
   {:first_name                    s/Str
    :last_name                     s/Str
-   (s/optional-key :middle_name)  s/Str
+   (s/optional-key :middle_name)  (s/maybe s/Str)
    :greeting_name                 s/Str
    (s/optional-key :table_id)     s/Int})
 
