@@ -71,7 +71,7 @@
 
   (rsvp! datasource
          email-notification-adapter
-         3
+         9
          {:state              "Pragueland"
           :city               "Prague"
           :street             "Pragueish"
@@ -79,8 +79,44 @@
           :descriptive_number "12"
           :postal_code        "12345"
           :accommodation      true
-          :email              "terkaborkovcova@gmail.com"
+          :email              "dave.lapes@gmail.com"
           :phone              "+420123456789"})
+
+  ;;David
+  (let [guest-id (-> (create! datasource {:first_name "David"
+                                          :last_name "Lapes"
+                                          :greeting_name "Davide"})
+                     :id)]
+    (rsvp! datasource
+           email-notification-adapter
+           guest-id
+           {:state              "Pragueland"
+            :city               "Prague"
+            :street             "Pragueish"
+            :orientation_number "878"
+            :descriptive_number "12"
+            :postal_code        "12345"
+            :accommodation      true
+            :email              "dave.lapes@gmail.com"
+            :phone              "+420123456789"}))
+
+  ;;Terka
+  (let [guest-id (-> (create! datasource {:first_name "Tereza"
+                                          :last_name "Borkovcova"
+                                          :greeting_name "Terko"})
+                     :id)]
+    (rsvp! datasource
+           email-notification-adapter
+           guest-id
+           {:state              "Pragueland"
+            :city               "Prague"
+            :street             "Pragueish"
+            :orientation_number "878"
+            :descriptive_number "12"
+            :postal_code        "12345"
+            :accommodation      true
+            :email              "terkaborkovcova@gmail.com"
+            :phone              "+420123456789"}))
 
   (def result
     (-notify email-notification-adapter {:recipient  "dave.lapes@gmail.com"

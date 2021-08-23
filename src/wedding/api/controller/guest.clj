@@ -5,9 +5,13 @@
 
 (defn rsvp
   "Creates RSVP record with a new guest."
-  [{:keys [ctx body-params]}]
-  (let [email-notification-adapter (-> ctx :notification-adapter :email)]
-    (service/rsvp! (:datasource ctx) email-notification-adapter body-params)))
+  [{:keys [ctx parameters body-params]}]
+  (let [id (-> parameters :path :id)
+        email-notification-adapter (-> ctx :notification-adapter :email)
+        result (service/rsvp! (:datasource ctx) email-notification-adapter id body-params)]
+    (if (= result :success)
+      {:message "RSVP creation has been successful"}
+      {:message "RSVP creation has failed"})))
 
 (defn create
   "Creates new guest."

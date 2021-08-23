@@ -27,7 +27,7 @@
                    sender
                    recipient
                    subject
-                   {:text-body text})]
+                   {:html-body text})]
       (timbre/info "Sent SES notification with message id " (.toString message-id))
       (timbre/info "Notified!"))))
 
