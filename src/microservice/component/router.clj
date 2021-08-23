@@ -1,7 +1,6 @@
 (ns microservice.component.router
   (:require [com.stuartsierra.component :as component]
             [muuntaja.core :as m]
-            [reitit.coercion :as reitit-coercion]
             [reitit.coercion.schema :as reitit-schema]
             [reitit.ring :as ring]
             [reitit.ring.middleware.parameters :as parameters]
@@ -12,7 +11,9 @@
             [taoensso.timbre :as timbre]
             [wedding.api.route.health-check :as health-check]
             [wedding.api.route.private.guest :as guest-private]
-            [wedding.api.route.public.auth :as auth]
+            [wedding.api.route.private.table :as table-private]
+            [wedding.api.route.public.auth :as auth-public]
+            [wedding.api.route.public.guest :as guest-public]
             [wedding.auth.middleware :as authentication]))
 
 (defrecord Router [email-notification-adapter datasource swagger]
@@ -27,11 +28,13 @@
                     ["/api"
 
                      ["/public"
-                      auth/routes]
+                      auth-public/routes
+                      guest-public/routes]
 
                      ["/private"
                       {:middleware [authentication/wrap-with-jwt-middleware]}
-                      guest-private/routes]]]
+                      guest-private/routes
+                      table-private/routes]]]
 
                    {:data {:coercion   reitit-schema/coercion
                            :ctx        {:datasource (:datasource datasource)

@@ -8,7 +8,6 @@
 (defn create!
   "Creates new guest."
   [datasource data]
-  ;;TODO: Validation
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (model/create! connection data)))
 

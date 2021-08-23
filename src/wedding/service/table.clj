@@ -5,7 +5,6 @@
 (defn create!
   "Creates new table."
   [datasource data]
-  ;;TODO: Validation
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (model/create! connection data)))
 
