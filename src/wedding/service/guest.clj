@@ -1,7 +1,9 @@
 (ns wedding.service.guest
   (:require [clojure.java.jdbc :as jdbc]
             [microservice.component.proto.notification :refer [-notify]]
+            [schema.core :as s]
             [taoensso.timbre :as timbre]
+            [wedding.api.schema.guest :refer [SubmitRSVP]]
             [wedding.model.guest :as model]
             [wedding.lib.email.template :as template]))
 
@@ -38,6 +40,7 @@
 (defn rsvp!
   "Creates RSVP record with a new guest."
   [datasource email-notification-adapter id data]
+  (s/validate SubmitRSVP data)
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (let [email (:email data)
           guest-record (model/get-by-id! connection id)

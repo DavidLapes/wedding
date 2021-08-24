@@ -13,13 +13,6 @@
   [connection id guest]
   (query/update-by-id! connection table-name id guest))
 
-(defn rsvp!
-  "Creates RSVP record for a guest."
-  [connection id rsvp]
-  ;TODO - Also write test for this for testability issues
-  ;TODO - Need to add a field to make RSVP form being doable only o
-  )
-
 (defn get-by-id!
   "Returns guest by given id."
   [connection id]
