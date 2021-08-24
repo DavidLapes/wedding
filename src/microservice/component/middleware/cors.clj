@@ -4,5 +4,5 @@
 (defn cors-middleware [handler]
   (wrap-cors
     handler
-    :access-control-allow-origin [#"http://localhost:3000"]
+    :access-control-allow-origin [#"http://localhost:3000" #"https://admin.terkaberedavida.cz/"]
     :access-control-allow-methods [:get :put :post :delete :patch]))
