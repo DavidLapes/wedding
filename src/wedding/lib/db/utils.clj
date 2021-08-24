@@ -37,7 +37,7 @@
   [query filters]
   (reduce
     (fn [query [filter-key filter-value]]
-      (when (or (= filter-key :limit)
+      (if (or (= filter-key :limit)
                 (= filter-key :order-limit)
                 (= filter-key :page_number))
         query
