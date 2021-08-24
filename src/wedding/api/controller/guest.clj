@@ -1,6 +1,7 @@
 (ns wedding.api.controller.guest
   (:refer-clojure :exclude [update get])
   (:require [ring.util.http-response :refer [created ok]]
+            [wedding.lib.api.http-response :refer [response-message]]
             [wedding.service.guest :as service]))
 
 (defn rsvp
@@ -10,8 +11,8 @@
         email-notification-adapter (-> ctx :notification-adapter :email)
         result (service/rsvp! (:datasource ctx) email-notification-adapter id body-params)]
     (if (= result :success)
-      {:message "RSVP creation has been successful"}
-      {:message "RSVP creation has failed"})))
+      (response-message "RSVP creation has been successful")
+      (response-message "RSVP creation has failed"))))
 
 (defn create
   "Creates new guest."
@@ -44,4 +45,4 @@
   [{:keys [ctx parameters]}]
   (let [id (-> parameters :path :id)]
     (service/delete! (:datasource ctx) id)
-    (ok)))
+    (ok (response-message "Successfully deleted"))))
