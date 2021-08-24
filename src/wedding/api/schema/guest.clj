@@ -10,7 +10,6 @@
    :postal_code         s/Str
    :accommodation       s/Bool
    :email               (s/maybe s/Str)
-   ;;TODO: Phone is not optional, change it!
    :phone               s/Str})
 
 (s/defschema CreateGuest
