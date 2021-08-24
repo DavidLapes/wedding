@@ -22,11 +22,12 @@
                        (fn [request]
                          (controller/create request)))}}]
    ["/:id"
-    {:get    {:summary   "Returns table by id"
-              :responses {200 {:body TableOutput}}
-              :handler   (wrap-with-context
-                           (fn [request]
-                             (controller/get-by-id request)))}
+    {:get    {:summary    "Returns table by id"
+              :responses  {200 {:body TableOutput}}
+              :parameters {:path {:id s/Int}}
+              :handler    (wrap-with-context
+                            (fn [request]
+                              (controller/get-by-id request)))}
      :put    {:summary    "Updates existing table"
               :responses  {200 {:body TableOutput}}
               :parameters {:body UpdateTable
