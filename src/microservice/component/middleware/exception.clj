@@ -2,13 +2,20 @@
   (:require [reitit.ring.middleware.exception :as exception]
             [taoensso.timbre :as timbre]
             [wedding.lib.api.http-response :refer [response-message]])
-  (:import (java.sql SQLException)))
+  (:import (java.sql SQLException)
+           (org.postgresql.util PSQLException)))
+
+(defn- get-exception-cause [exception]
+  (let [class (type exception)]
+    (condp isa? class
+      PSQLException           (-> (.getServerErrorMessage exception) (.toString))
+      (-> (ex-data exception) :cause))))
 
 (defn- get-exception-message [exception default-message]
-  (let [cause (-> (ex-data exception) :cause)]
+  (let [cause (get-exception-cause exception)]
     (case cause
       :invalid-credentials  "Invalid credentials provided"
-      :else                 (str "Internal Server Error: " default-message))))
+      (str "Internal Server Error: " "{" default-message "} - " cause))))
 
 (defn- exception-handler [message exception request]
   {:status 500
