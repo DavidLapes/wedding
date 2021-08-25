@@ -4,6 +4,13 @@
             [wedding.lib.api.http-response :refer [response-message]]
             [wedding.service.guest :as service]))
 
+(defn get-rsvp-guests
+  "Returns list of guests who have not responded to RSVP form yet."
+  [{:keys [ctx]}]
+  (let [datasource (:datasource ctx)
+        guests (service/get-rsvp-guests! datasource)]
+    (ok guests)))
+
 (defn rsvp
   "Creates RSVP record with a new guest."
   [{:keys [ctx parameters body-params]}]

@@ -47,3 +47,11 @@
 (s/defschema GuestListOutput
   {:data  [GuestOutput]
    :count s/Int})
+
+(s/defschema PublicGuestOutput
+  {:id        s/Int
+   :full_name s/Str})
+
+(s/defschema PublicGuestListOutput
+  {:data  [PublicGuestOutput]
+   :count s/Int})

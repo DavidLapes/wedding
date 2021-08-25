@@ -64,12 +64,31 @@
           (timbre/error e)
           :failed)))))
 
+(defn get-rsvp-guests!
+  "Returns list of guests who have not responded to RSVP form yet."
+  [datasource]
+  (jdbc/with-db-connection [connection {:datasource datasource}]
+    (model/get-rsvp-guests! connection)))
+
+;;-----------------------------------------------------------------------------------------
+
 (comment
 
   (require '[dev-user :as dev])
 
   (def datasource (-> @dev/system :wedding.component/datasource :datasource))
   (def email-notification-adapter (-> @dev/system :wedding.component/email-notification-adapter ))
+
+  (create! datasource {:first_name "David"
+                       :last_name "Lapes"
+                       :greeting_name "Davide"
+                       :rsvp_answered true})
+
+  (create! datasource {:first_name "David"
+                       :last_name "Lapes"
+                       :greeting_name "Davide"})
+
+  (rsvp-guests! datasource)
 
   (rsvp! datasource
          email-notification-adapter
