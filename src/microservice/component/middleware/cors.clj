@@ -7,5 +7,7 @@
     :access-control-allow-origin [#"http://localhost:3000"
                                   #"https://admin.terkaberedavida.cz"
                                   #"https://www.terkaberedavida.cz"
-                                  #"https://terkaberedavida.cz"]
+                                  #"https://terkaberedavida.cz"
+                                  #"https://www.en.terkaberedavida.cz"
+                                  #"https://en.terkaberedavida.cz"]
     :access-control-allow-methods [:get :put :post :delete :patch]))
