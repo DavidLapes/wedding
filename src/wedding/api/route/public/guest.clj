@@ -14,7 +14,7 @@
            :handler (wrap-with-context
                       (fn [request]
                         (controller/get-rsvp-guests request)))}}]
-   ["/rsvp"
+   ["/:id/rsvp"
     {:post {:summary "Creates RSVP record for a guest"
             :responses {200 {:body MessageResponse}}
             :parameters {:body SubmitRSVP
