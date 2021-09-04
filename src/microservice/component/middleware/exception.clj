@@ -14,7 +14,8 @@
 (defn- get-exception-message [exception default-message]
   (let [cause (get-exception-cause exception)]
     (case cause
-      :invalid-credentials  "Invalid credentials provided"
+      :invalid-credentials              "Invalid credentials provided"
+      :rsvp-for-guest-already-answered  "Tvá účast může být potvrzena pouze jednou"
       (str "Internal Server Error: " "{" default-message "} - " cause))))
 
 (defn- exception-handler [message exception request]
