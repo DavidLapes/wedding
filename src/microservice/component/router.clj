@@ -39,7 +39,7 @@
 
                    {:data {:coercion   reitit-schema/coercion
                            :ctx        {:datasource (:datasource datasource)
-                                        :notification-adapter {:email (:email-notification-adapter email-notification-adapter)}}
+                                        :notification-adapter {:email email-notification-adapter}}
                            :muuntaja   m/instance
                            :middleware [;; ring handler logger
                                         logger/wrap-with-logger
