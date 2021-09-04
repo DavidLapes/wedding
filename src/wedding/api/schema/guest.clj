@@ -2,7 +2,10 @@
   (:require [schema.core :as s]))
 
 (s/defschema SubmitRSVP
-  {:address       s/Str
+  {:street        s/Str
+   :city          s/Str
+   :postal_code   s/Str
+   :state         s/Str
    :accommodation s/Bool
    :email         (s/maybe s/Str)
    :phone         s/Str})
@@ -28,8 +31,11 @@
    :greeting_name s/Str
    :phone         (s/maybe s/Str)
    :email         (s/maybe s/Str)
-   :address       (s/maybe s/Str)
-   :accommodation s/Bool
+   :street        (s/maybe s/Str)
+   :city          (s/maybe s/Str)
+   :postal_code   (s/maybe s/Str)
+   :state         (s/maybe s/Str)
+   :accommodation (s/maybe s/Bool)
    :rsvp_answered s/Bool
    :email_sent    s/Bool
    :table_id      (s/maybe s/Int)})
