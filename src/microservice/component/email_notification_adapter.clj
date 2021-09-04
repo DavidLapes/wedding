@@ -11,12 +11,12 @@
   (start [this]
     (timbre/info "Starting EmailNotificationAdapter")
     (timbre/info "Started EmailNotificationAdapter")
-    (assoc this :email-notification-adapter "Hello, world!"))
+    this)
 
   (stop [this]
     (timbre/info "Stopping EmailNotificationAdapter")
     (timbre/info "Stopped EmailNotificationAdapter")
-    (dissoc this :email-notification-adapter))
+    this)
 
   proto/SNSNotificationAdapter
   (-notify [this {:keys [recipient subject text]}]
