@@ -4,6 +4,6 @@ branch-defaults:
 global:
   application_name: TerkaBereDavidaELBApplication
   default_ec2_keyname: XXXXXX
-  default_platform: Docker running on 64bit Amazon Linux 2/3.4.4
+  default_platform: Docker running on 64bit Amazon Linux 2/3.4.7
   default_region: eu-west-1
   sc: git
