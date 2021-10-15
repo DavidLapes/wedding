@@ -3,7 +3,8 @@
 (defn rsvp-template [recipient {:keys [greeting_name accommodation
                                        first_name middle_name last_name
                                        email phone
-                                       street city postal_code state]}]
+                                       street city postal_code state
+                                       note]}]
   {:recipient recipient
    :subject   "Vítej na svatbě Davida a Terky"
    :text      (str
@@ -20,7 +21,7 @@
                 Údaje, které jsi zadal(a), jsou následující:
                 <br/>
                 <br/>
-                <b>Jméno a příjmení: </b>:" (if (some? middle_name) (str first_name " " middle_name " " last_name)
+                <b>Jméno a příjmení: </b>" (if (some? middle_name) (str first_name " " middle_name " " last_name)
                                                                     (str first_name " " last_name)) "
                 <br/>
                 <b>Ubytování na svatbě: </b>" (if accommodation "Ano" "Ne") "
@@ -36,8 +37,16 @@
                 <b>PSČ: </b> " postal_code "
                 <br/>
                 <b>Stát: </b> " state "
-                <br/>
-                <br/>
+                <br/>"
+
+                (if (clojure.string/blank? note)
+                  ""
+                  (str
+                    "<br/>
+                    <b>Poznámka: </b> " note "
+                    <br/>"))
+
+                "<br/>
                 <br/>
                 Přejeme krásný den a brzy od nás zase něco počteš (budeš-li chtít)
                 <br/>

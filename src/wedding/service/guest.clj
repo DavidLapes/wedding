@@ -51,7 +51,8 @@
                                                                :city          (:city data)
                                                                :street        (:street data)
                                                                :postal_code   (:postal_code data)
-                                                               :state         (:state data)}))
+                                                               :state         (:state data)
+                                                               :note          (:note data)}))
           data (merge data
                       {:rsvp_answered true})]
       (if (:rsvp_answered guest-record)

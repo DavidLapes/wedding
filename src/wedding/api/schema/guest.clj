@@ -8,7 +8,8 @@
    :state         s/Str
    :accommodation s/Bool
    :email         (s/maybe s/Str)
-   :phone         s/Str})
+   :phone         s/Str
+   :note          (s/maybe s/Str)})
 
 (s/defschema CreateGuest
   {:first_name                    s/Str
@@ -37,6 +38,7 @@
    :state         (s/maybe s/Str)
    :accommodation (s/maybe s/Bool)
    :rsvp_answered s/Bool
+   :note          (s/maybe s/Str)
    :email_sent    s/Bool
    :table_id      (s/maybe s/Int)})
 
