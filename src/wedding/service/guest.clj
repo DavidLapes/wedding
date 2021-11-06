@@ -44,17 +44,20 @@
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (let [email (:email data)
           guest-record (model/get-by-id! connection id)
-          notify-options (template/rsvp-template email (merge guest-record
-                                                              {:accommodation (:accommodation data)
-                                                               :email         (:email data)
-                                                               :phone         (:phone data)
-                                                               :city          (:city data)
-                                                               :street        (:street data)
-                                                               :postal_code   (:postal_code data)
-                                                               :state         (:state data)
-                                                               :note          (:note data)}))
-          data (merge data
-                      {:rsvp_answered true})]
+          notify-options (template/rsvp-template email
+                                                 (merge guest-record
+                                                        {:accommodation (:accommodation data)
+                                                         :email         (:email data)
+                                                         :phone         (:phone data)
+                                                         :city          (:city data)
+                                                         :street        (:street data)
+                                                         :postal_code   (:postal_code data)
+                                                         :state         (:state data)
+                                                         :note          (:note data)})
+                                                 (:language data))
+          data (-> data
+                   (dissoc :language)
+                   (merge {:rsvp_answered true}))]
       (if (:rsvp_answered guest-record)
         (throw (ex-info (str "RSVP record for given guest ID - " id " - already exists") {:cause :rsvp-for-guest-already-answered}))
         (model/update! connection id data))

@@ -1,7 +1,7 @@
 (ns wedding.api.controller.guest
   (:refer-clojure :exclude [update get])
-  (:require [ring.util.http-response :refer [created ok]]
-            [wedding.lib.api.http-response :refer [response-message]]
+  (:require [ring.util.http-response :refer [created ok internal-server-error]]
+            [wedding.lib.api.http-response :refer [add-response-message response-message]]
             [wedding.service.guest :as service]))
 
 (defn get-rsvp-guests
@@ -17,9 +17,10 @@
   (let [id (-> parameters :path :id)
         email-notification-adapter (-> ctx :notification-adapter :email)
         result (service/rsvp! (:datasource ctx) email-notification-adapter id body-params)]
+    (println result)
     (if (= result :success)
       (response-message "RSVP creation has been successful")
-      (response-message "RSVP creation has failed"))))
+      (add-response-message (internal-server-error) "RSVP creation has failed"))))
 
 (defn create
   "Creates new guest."

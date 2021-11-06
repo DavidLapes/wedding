@@ -9,7 +9,8 @@
    :accommodation s/Bool
    :email         (s/maybe s/Str)
    :phone         s/Str
-   :note          (s/maybe s/Str)})
+   :note          (s/maybe s/Str)
+   :language      (s/enum "czech" "english")})
 
 (s/defschema CreateGuest
   {:first_name                    s/Str
