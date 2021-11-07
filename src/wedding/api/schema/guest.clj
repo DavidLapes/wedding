@@ -41,7 +41,8 @@
    :rsvp_answered s/Bool
    :note          (s/maybe s/Str)
    :email_sent    s/Bool
-   :table_id      (s/maybe s/Int)})
+   :table_id      (s/maybe s/Int)
+   :language      (s/maybe s/Str)})
 
 (s/defschema GuestListOutput
   {:data  [GuestOutput]

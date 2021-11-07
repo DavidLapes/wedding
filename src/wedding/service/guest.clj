@@ -55,9 +55,7 @@
                                                          :state         (:state data)
                                                          :note          (:note data)})
                                                  (:language data))
-          data (-> data
-                   (dissoc :language)
-                   (merge {:rsvp_answered true}))]
+          data (merge data {:rsvp_answered true})]
       (if (:rsvp_answered guest-record)
         (throw (ex-info (str "RSVP record for given guest ID - " id " - already exists") {:cause :rsvp-for-guest-already-answered}))
         (model/update! connection id data))
