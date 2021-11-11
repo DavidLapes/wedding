@@ -1,5 +1,6 @@
 (ns wedding.lib.db.pagination
-  (:require [honeysql.helpers :as honey]))
+  (:require [clojure.walk :refer [keywordize-keys]]
+            [honeysql.helpers :as honey]))
 
 (defn- extract-limit
   "Returns limit filter from filters map."
@@ -29,7 +30,8 @@
 (defn apply-paging-query
   "Applies pagination filters to HoneySQL query."
   [query filters]
-  (let [limit (extract-limit filters)
+  (let [filters (keywordize-keys filters)
+        limit (extract-limit filters)
         offset (extract-offset filters)]
     (cond-> query
             (some? limit) (honey/limit (extract-limit filters))

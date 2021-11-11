@@ -1,5 +1,6 @@
 (ns wedding.service.guest
   (:require [clojure.java.jdbc :as jdbc]
+            [microservice.component.proto.audit :refer [-persist]]
             [microservice.component.proto.notification :refer [-notify]]
             [schema.core :as s]
             [taoensso.timbre :as timbre]
@@ -39,7 +40,7 @@
 
 (defn rsvp!
   "Creates RSVP record with a new guest."
-  [datasource email-notification-adapter id data]
+  [datasource audit-logger email-notification-adapter id data]
   (s/validate SubmitRSVP data)
   (jdbc/with-db-transaction [connection {:datasource datasource}]
     (let [email (:email data)
@@ -64,11 +65,16 @@
           (timbre/info "Preparing notification for guest ID: " id)
           (-notify email-notification-adapter notify-options)
           (timbre/info (str "Disabling additional RSVP forms for guest ID: " id))
-          (model/update! connection id {:email_sent true}))
+          (model/update! connection id {:email_sent true})
+          (-persist audit-logger {:event   "SUBMIT_RSVP"
+                                  :payload (merge data
+                                                  {:record guest-record})}))
         (timbre/info (str "Created RSVP record for guest ID: " id))
         :success
         (catch Exception e
           (timbre/error "Creation of RSVP has FAILED")
+          (timbre/error (str "Guest: " guest-record))
+          (timbre/error (str "RSVP data: " data))
           (jdbc/db-set-rollback-only! connection)
           (timbre/error e)
           :failed)))))
@@ -86,7 +92,8 @@
   (require '[dev-user :as dev])
 
   (def datasource (-> @dev/system :wedding.component/datasource :datasource))
-  (def email-notification-adapter (-> @dev/system :wedding.component/email-notification-adapter ))
+  (def email-notification-adapter (-> @dev/system :wedding.component/email-notification-adapter))
+  (def audit-logger (-> @dev/system :wedding.component/audit-logger))
 
   (create! datasource {:first_name "David"
                        :last_name "Lapes"
@@ -97,52 +104,56 @@
                        :last_name "Lapes"
                        :greeting_name "Davide"})
 
-  (rsvp-guests! datasource)
+  (get-rsvp-guests! datasource)
 
   (rsvp! datasource
+         audit-logger
          email-notification-adapter
-         9
+         16
          {:state              "Pragueland"
           :city               "Prague"
           :street             "Pragueish"
-          :orientation_number "878"
-          :descriptive_number "12"
+          :note               nil
           :postal_code        "12345"
           :accommodation      true
           :email              "dave.lapes@gmail.com"
-          :phone              "+420123456789"})
+          :phone              "+420123456789"
+          :language           "czech"})
 
   ;;David
-  (let [guest-id (-> (create! datasource {:first_name "David"
-                                          :last_name "Lapes"
-                                          :greeting_name "Davide"})
+  (let [guest-id (-> (create! (-> @dev-user/system :wedding.component/datasource :datasource)
+                              {:first_name "David"
+                               :last_name "Lapes"
+                               :greeting_name "Davide"})
                      :id)]
-    (rsvp! datasource
-           email-notification-adapter
+    (rsvp! (-> @dev-user/system :wedding.component/datasource :datasource)
+           (-> @dev-user/system :wedding.component/audit-logger)
+           (-> @dev-user/system :wedding.component/email-notification-adapter)
            guest-id
            {:state              "Pragueland"
             :city               "Prague"
             :street             "Pragueish"
-            :orientation_number "878"
-            :descriptive_number "12"
+            :note               nil
+            :language           "czech"
             :postal_code        "12345"
             :accommodation      true
             :email              "dave.lapes@gmail.com"
             :phone              "+420123456789"}))
 
   ;;Terka
-  (let [guest-id (-> (create! datasource {:first_name "Tereza"
-                                          :last_name "Borkovcova"
-                                          :greeting_name "Terko"})
+  (let [guest-id (-> (create! (-> @dev-user/system :wedding.component/datasource :datasource)
+                              {:first_name "Tereza"
+                               :last_name "Borkovcova"
+                               :greeting_name "Terko"})
                      :id)]
-    (rsvp! datasource
-           email-notification-adapter
-           guest-id
+    (rsvp! (-> @dev-user/system :wedding.component/datasource :datasource)
+           (-> @dev-user/system :wedding.component/audit-logger)
+           (-> @dev-user/system :wedding.component/email-notification-adapter)
            {:state              "Pragueland"
             :city               "Prague"
             :street             "Pragueish"
-            :orientation_number "878"
-            :descriptive_number "12"
+            :note               nil
+            :language           "czech"
             :postal_code        "12345"
             :accommodation      true
             :email              "terkaborkovcova@gmail.com"

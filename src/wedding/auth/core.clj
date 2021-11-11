@@ -34,9 +34,11 @@
              (throw (ex-info "Authentication token has expired" {:cause :expired-auth-token})))
            (throw (ex-info "User is inactive" {:cause :inactive})))))))
 
-(def authentication-config ^{:doc "Configuration for Buddy-based authentication middleware wrapper"}
+(defn authentication-config
+  [datasource]
+  "Configuration for Buddy-based authentication middleware wrapper"
   (backends/jws {:realm "Wedding API"
-                 :authfn authentication-fn
+                 :authfn (authentication-fn datasource)
                  :token-name "Bearer"
                  :secret jwt-secret
                  :on-error (fn [_ ex]

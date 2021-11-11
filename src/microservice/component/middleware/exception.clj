@@ -16,9 +16,11 @@
     (case cause
       :invalid-credentials              "Invalid credentials provided"
       :rsvp-for-guest-already-answered  "Tvá účast může být potvrzena pouze jednou"
+      :not-authenticated                "Missing credentials header"
       (str "Internal Server Error: " "{" default-message "} - " cause))))
 
 (defn- exception-handler [message exception request]
+  ;;FIXME
   {:status 500
    :body (response-message (get-exception-message exception message))})
 

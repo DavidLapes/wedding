@@ -3,11 +3,15 @@
             [wedding.lib.db.pagination :as lib-pagination]
             [clojure.java.jdbc :as jdbc]
             [clojure.java.io :as io]
+            [clojure.walk :refer [keywordize-keys]]
             [honeysql.core :as sql-core]
             [honeysql.helpers :as honey :refer [delete-from insert-into values where merge-where]]
             [honeysql-postgres.format :refer :all]
             [honeysql-postgres.helpers :as psqlh]
             [taoensso.timbre :as timbre]))
+
+(defn keywordize-filters [filters]
+  (keywordize-keys filters))
 
 (defn insertable-cartesian-product
   "Returns vector of maps for multi-row insert into relation tables
@@ -35,15 +39,16 @@
 (defn apply-filters
   "Returns HoneySQL query enriched with WHERE clauses using filters map provided as argument."
   [query filters]
-  (reduce
-    (fn [query [filter-key filter-value]]
-      (if (or (= filter-key :limit)
+  (let [filters (keywordize-keys filters)]
+    (reduce
+      (fn [query [filter-key filter-value]]
+        (if (or (= filter-key :limit)
                 (= filter-key :order-limit)
                 (= filter-key :page_number))
-        query
-        (merge-where query [:= filter-key filter-value])))
-    query
-    filters))
+          query
+          (merge-where query [:= filter-key filter-value])))
+      query
+      filters)))
 
 (defn- exec-query!
   "Executes HoneySQL query using HikariCP connection. Don't use this for select! This is only for
@@ -119,9 +124,10 @@
 (defn delete!
   "Performs DELETE on given table using filters map."
   ([connection table filters]
-   (exec-query! connection
-                (-> (delete-from table)
-                    (apply-filters filters)))))
+   (let [filters (keywordize-filters filters)]
+     (exec-query! connection
+                  (-> (delete-from table)
+                      (apply-filters filters))))))
 
 (defn get-by-id!
   "Returns single row by PK value, defaulted to :id PK column by provided ID value.

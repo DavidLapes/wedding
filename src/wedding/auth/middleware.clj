@@ -4,5 +4,5 @@
 
 (defn wrap-with-jwt-middleware
   "Returns Ring middleware for JWT-based authentication."
-  [handler]
-  (auth/wrap-authentication handler authentication-config))
+  [datasource handler]
+  (auth/wrap-authentication handler (authentication-config datasource)))

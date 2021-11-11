@@ -15,8 +15,9 @@
   "Creates RSVP record with a new guest."
   [{:keys [ctx parameters body-params]}]
   (let [id (-> parameters :path :id)
+        audit-logger (:audit-logger ctx)
         email-notification-adapter (-> ctx :notification-adapter :email)
-        result (service/rsvp! (:datasource ctx) email-notification-adapter id body-params)]
+        result (service/rsvp! (:datasource ctx) audit-logger email-notification-adapter id body-params)]
     (println result)
     (if (= result :success)
       (response-message "RSVP creation has been successful")

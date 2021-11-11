@@ -1,5 +1,6 @@
 (ns wedding.lib.db.order
   (:require [clojure.string :refer [lower-case]]
+            [clojure.walk :refer [keywordize-keys]]
             [honeysql.helpers :as honey]))
 
 (defn- extract-order-column
@@ -25,7 +26,8 @@
   :order_column  \"name\"       -   required
   :order_direction \"asc\"      -   optional, can be nil."
   [query filters]
-  (let [order-column (extract-order-column filters)
+  (let [filters (keywordize-keys filters)
+        order-column (extract-order-column filters)
         order-direction (extract-order-direction filters)]
     (if order-column
       (honey/order-by query [order-column order-direction])

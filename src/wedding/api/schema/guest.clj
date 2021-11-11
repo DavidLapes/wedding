@@ -2,15 +2,15 @@
   (:require [schema.core :as s]))
 
 (s/defschema SubmitRSVP
-  {:street        s/Str
-   :city          s/Str
-   :postal_code   s/Str
-   :state         s/Str
-   :accommodation s/Bool
-   :email         (s/maybe s/Str)
-   :phone         s/Str
-   :note          (s/maybe s/Str)
-   :language      (s/enum "czech" "english")})
+  {:street                 s/Str
+   :city                   s/Str
+   :postal_code            s/Str
+   :state                  s/Str
+   :accommodation          s/Bool
+   (s/optional-key :email) (s/maybe s/Str)
+   :phone                  s/Str
+   (s/optional-key :note)  (s/maybe s/Str)
+   :language               (s/enum "czech" "english")})
 
 (s/defschema CreateGuest
   {:first_name                    s/Str
