@@ -10,10 +10,10 @@
             [honeysql-postgres.helpers :as psqlh]
             [taoensso.timbre :as timbre]))
 
-(defn keywordize-filters [filters]
+(defn- keywordize-filters [filters]
   (keywordize-keys filters))
 
-(defn insertable-cartesian-product
+(defn- insertable-cartesian-product
   "Returns vector of maps for multi-row insert into relation tables
 
   c1-name       -     name of a column, must be a keyword
@@ -36,18 +36,21 @@
    (timbre/info (str "Executing SQL file - " file))
    (jdbc/db-do-prepared connection (slurp (io/resource file)))))
 
-;;TODO: Use blacklist instead of multiple checks
-(defn apply-filters
+(def ^:private filters-blacklist
+  #{:limit :order_column :order_direction :order_limit :page_number})
+
+(defn- is-blacklisted? [key]
+  (-> (key filters-blacklist)
+      nil?
+      not))
+
+(defn- apply-filters
   "Returns HoneySQL query enriched with WHERE clauses using filters map provided as argument."
   [query filters]
   (let [filters (keywordize-keys filters)]
     (reduce
       (fn [query [filter-key filter-value]]
-        (if (or (= filter-key :limit)
-                (= filter-key :order_column)
-                (= filter-key :order_direction)
-                (= filter-key :order_limit)
-                (= filter-key :page_number))
+        (if (is-blacklisted? filter-key)
           query
           (merge-where query [:= filter-key filter-value])))
       query
@@ -65,7 +68,7 @@
   ([connection query]
    (jdbc/query connection (sql-core/format query))))
 
-(defn common-filter-count-query!
+(defn- common-filter-count-query!
   "Returns integer result of count query with all common non-nil filters applied."
   [connection table filters]
   (let [query (-> (honey/select (sql-core/raw "COUNT(*)"))
@@ -76,7 +79,8 @@
       (:count (first result))
       (:count result))))
 
-(defn common-filter-query!
+;;TODO: Support custom filters
+(defn- common-filter-query!
   "Returns result of query with all common non-nil filters applied."
   [connection table filters]
   (let [query (-> (honey/select :*)

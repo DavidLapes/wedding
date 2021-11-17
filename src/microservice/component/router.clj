@@ -14,6 +14,7 @@
             [wedding.api.route.private.audit :as audit-private]
             [wedding.api.route.health-check :as health-check]
             [wedding.api.route.private.guest :as guest-private]
+            [wedding.api.route.private.statistics :as statistics-private]
             [wedding.api.route.private.table :as table-private]
             [wedding.api.route.public.auth :as auth-public]
             [wedding.api.route.public.guest :as guest-public]
@@ -40,6 +41,7 @@
                                     auth/wrap-authentication-check]}
                       audit-private/routes
                       guest-private/routes
+                      statistics-private/routes
                       table-private/routes]]]
 
                    {:data {:coercion   reitit-schema/coercion
