@@ -7,9 +7,7 @@
   {:id           s/Int
    :event        s/Str
    :time_created LocalDateTime
-   :payload      (merge SubmitRSVP
-                        {:rsvp_answered s/Bool}
-                        {:record GuestOutput})})
+   :payload      s/Any})
 
 (s/defschema AuditListOutput
   {:data  [AuditOutput]

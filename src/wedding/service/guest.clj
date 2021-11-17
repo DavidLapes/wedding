@@ -16,9 +16,22 @@
 
 (defn update!
   "Updates an existing guest."
-  [datasource id data]
+  [datasource audit-logger id data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (model/update! connection id data)))
+    (let [guest-record (model/get-by-id! connection id)]
+      (try
+        (model/update! connection id data)
+        (-persist audit-logger {:event   "MODIFY_GUEST"
+                                :payload (merge data
+                                                {:record guest-record})})
+        (model/get-by-id! connection id)
+        (catch Exception e
+          (timbre/error (str "Modification of guest with ID - " id " - has failed"))
+          (timbre/error (str "Guest: " guest-record))
+          (timbre/error (str "Modify data: " data))
+          (jdbc/db-set-rollback-only! connection)
+          (timbre/error e)
+          (throw (ex-info "Modification of guest has failed" {:cause :modify-guest-failed})))))))
 
 (defn get!
   "Returns list of guests."
@@ -34,9 +47,22 @@
 
 (defn delete!
   "Deletes guest by id."
-  [datasource id]
+  [datasource audit-logger id]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (model/delete! connection id)))
+    (let [guest-record (model/get-by-id! connection id)]
+      (try
+        (-persist audit-logger {:event   "DELETE_GUEST"
+                                :payload {:id id
+                                          :first_name (:first_name guest-record)
+                                          :last_name (:last_name guest-record)
+                                          :email (:email guest-record)
+                                          :record guest-record}})
+        (model/delete! connection id)
+        (catch Exception e
+          (timbre/error (str "Deletion of guest with ID - " id " - has failed"))
+          (jdbc/db-set-rollback-only! connection)
+          (timbre/error e)
+          (throw (ex-info "Deletion of guest has failed" {:cause :delete-guest-failed})))))))
 
 (defn rsvp!
   "Creates RSVP record with a new guest."

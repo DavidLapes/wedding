@@ -33,7 +33,8 @@
   "Updates guest."
   [{:keys [ctx parameters body-params]}]
   (let [id    (-> parameters :path :id)
-        guest (service/update! (:datasource ctx) id body-params)]
+        audit-logger (:audit-logger ctx)
+        guest (service/update! (:datasource ctx) audit-logger id body-params)]
     (ok guest)))
 
 (defn get
@@ -52,6 +53,7 @@
 (defn delete
   "Deletes guest by id."
   [{:keys [ctx parameters]}]
-  (let [id (-> parameters :path :id)]
-    (service/delete! (:datasource ctx) id)
+  (let [id (-> parameters :path :id)
+        audit-logger (:audit-logger ctx)]
+    (service/delete! (:datasource ctx) audit-logger id)
     (ok (response-message "Successfully deleted"))))

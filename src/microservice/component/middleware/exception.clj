@@ -17,6 +17,8 @@
       :invalid-credentials              "Invalid credentials provided"
       :rsvp-for-guest-already-answered  "Tvá účast může být potvrzena pouze jednou"
       :not-authenticated                "Missing credentials header"
+      :modify-guest-failed              "Modification of guest has failed"
+      :delete-guest-failed              "Deletion of guest has failed"
       (str "Internal Server Error: " "{" default-message "} - " cause))))
 
 (defn- exception-handler [message exception request]

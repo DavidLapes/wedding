@@ -8,4 +8,7 @@
   ([connection]
    (get-all! connection {}))
   ([connection filters]
-   (query/get-all! connection table-name filters)))
+   (query/get-all! connection table-name (merge
+                                           {:order_column    "time_created"
+                                            :order_direction "desc"}
+                                           filters))))

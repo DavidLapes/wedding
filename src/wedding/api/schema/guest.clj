@@ -22,8 +22,18 @@
 (s/defschema UpdateGuest
   {(s/optional-key :first_name)    s/Str
    (s/optional-key :last_name)     s/Str
-   (s/optional-key :table_id)      s/Int
-   (s/optional-key :greeting_name) s/Str})
+   (s/optional-key :middle_name)   (s/maybe s/Str)
+   (s/optional-key :greeting_name) s/Str
+   (s/optional-key :phone)         (s/maybe s/Str)
+   (s/optional-key :email)         (s/maybe s/Str)
+   (s/optional-key :street)        (s/maybe s/Str)
+   (s/optional-key :city)          (s/maybe s/Str)
+   (s/optional-key :postal_code)   (s/maybe s/Str)
+   (s/optional-key :state)         (s/maybe s/Str)
+   (s/optional-key :accommodation) (s/maybe s/Bool)
+   (s/optional-key :note)          (s/maybe s/Str)
+   (s/optional-key :table_id)      (s/maybe s/Int)
+   (s/optional-key :language)      (s/maybe s/Str)})
 
 (s/defschema GuestOutput
   {:id            s/Int

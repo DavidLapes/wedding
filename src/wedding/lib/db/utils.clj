@@ -36,6 +36,7 @@
    (timbre/info (str "Executing SQL file - " file))
    (jdbc/db-do-prepared connection (slurp (io/resource file)))))
 
+;;TODO: Use blacklist instead of multiple checks
 (defn apply-filters
   "Returns HoneySQL query enriched with WHERE clauses using filters map provided as argument."
   [query filters]
@@ -43,7 +44,9 @@
     (reduce
       (fn [query [filter-key filter-value]]
         (if (or (= filter-key :limit)
-                (= filter-key :order-limit)
+                (= filter-key :order_column)
+                (= filter-key :order_direction)
+                (= filter-key :order_limit)
                 (= filter-key :page_number))
           query
           (merge-where query [:= filter-key filter-value])))

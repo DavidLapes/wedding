@@ -10,6 +10,7 @@
     (-> (lower-case column)
         keyword)))
 
+;;TODO: Add support for already passed-in keywords
 (defn- extract-order-direction
   "Returns keywordized order direction filter from filters map."
   [filters]
