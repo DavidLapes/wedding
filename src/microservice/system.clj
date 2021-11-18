@@ -38,5 +38,4 @@
 (Thread/setDefaultUncaughtExceptionHandler
   (reify Thread$UncaughtExceptionHandler
     (uncaughtException [_ thread ex]
-      (timbre/info "Hello")
       (timbre/error ex "Uncaught exception on" (.getName thread)))))
