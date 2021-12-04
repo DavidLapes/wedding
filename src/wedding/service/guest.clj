@@ -91,10 +91,10 @@
           (timbre/info "Preparing notification for guest ID: " id)
           (-notify email-notification-adapter notify-options)
           (timbre/info (str "Disabling additional RSVP forms for guest ID: " id))
-          (model/update! connection id {:email_sent true})
-          (-persist audit-logger {:event   "SUBMIT_RSVP"
-                                  :payload (merge data
-                                                  {:record guest-record})}))
+          (model/update! connection id {:email_sent true}))
+        (-persist audit-logger {:event   "SUBMIT_RSVP"
+                                :payload (merge data
+                                                {:record guest-record})})
         (timbre/info (str "Created RSVP record for guest ID: " id))
         :success
         (catch Exception e
