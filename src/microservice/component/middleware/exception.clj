@@ -1,9 +1,24 @@
 (ns microservice.component.middleware.exception
   (:require [reitit.ring.middleware.exception :as exception]
+            [ring.util.http-status :refer [internal-server-error unauthorized bad-request]]
             [taoensso.timbre :as timbre]
             [wedding.lib.api.http-response :refer [response-message]])
   (:import (java.sql SQLException)
            (org.postgresql.util PSQLException)))
+
+(def ^:private exception-codes
+  {:expired-auth-token               {:code    unauthorized
+                                      :message "Přihlášení vypršelo, prosím, přihlašte se znovu"}
+   :invalid-credentials              {:code    unauthorized
+                                      :message "Neplatné přihlašovací údaje"}
+   :not-authenticated                {:code    unauthorized
+                                      :message "Nejsi přihlášen(a), prosím, přihlas se"}
+   :rsvp-for-guest-already-answered  {:code    bad-request
+                                      :message "Tvá účast může být potvrzena pouze jednou"}
+   :modify-guest-failed              {:code    internal-server-error
+                                      :message "Úprava hosta se nezdařila"}
+   :delete-guest-failed              {:code    internal-server-error
+                                      :message "Smazání hosta se nezdařilo"}})
 
 (defn- get-exception-cause [exception]
   (let [class (type exception)]
@@ -11,20 +26,15 @@
       PSQLException           (-> (.getServerErrorMessage exception) (.toString))
       (-> (ex-data exception) :cause))))
 
-(defn- get-exception-message [exception default-message]
+(defn- exception-handler [default-message exception request]
   (let [cause (get-exception-cause exception)]
-    (case cause
-      :invalid-credentials              "Invalid credentials provided"
-      :rsvp-for-guest-already-answered  "Tvá účast může být potvrzena pouze jednou"
-      :not-authenticated                "Missing credentials header"
-      :modify-guest-failed              "Modification of guest has failed"
-      :delete-guest-failed              "Deletion of guest has failed"
-      (str "Internal Server Error: " "{" default-message "} - " cause))))
-
-(defn- exception-handler [message exception request]
-  ;;FIXME
-  {:status 500
-   :body (response-message (get-exception-message exception message))})
+    (let [response (if-let [known-exception (cause exception-codes)]
+                     {:status (:code known-exception)
+                      :body   (-> known-exception :message (response-message))}
+                     {:status internal-server-error
+                      :body   (str "Internal Server Error: " "{" default-message "} - " cause)})]
+      (println response)
+      response)))
 
 (def exception-middleware
   (exception/create-exception-middleware
