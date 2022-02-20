@@ -30,6 +30,20 @@
         data (service/accommodation-accepted datasource)]
     (ok data)))
 
+(defn beer-drinkers
+  "Returns guests who will drink beer at the wedding."
+  [{:keys [ctx]}]
+  (let [datasource (:datasource ctx)
+        data (service/beer-drinkers datasource)]
+    (ok data)))
+
+(defn wine-drinkers
+  "Returns guests who will drink wine at the wedding."
+  [{:keys [ctx]}]
+  (let [datasource (:datasource ctx)
+        data (service/wine-drinkers datasource)]
+    (ok data)))
+
 (defn bundled-statistics
   "Returns all statistics for RSVP and accommodation bundled together."
   [{:keys [ctx]}]

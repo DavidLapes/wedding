@@ -60,7 +60,8 @@
 (defn sign-in
   "Signs in given user and returns generated token if authentication succeeds."
   [datasource email password]
-  (let [user (get-login-detail-by-email! datasource email)
+  (let [email (-> email (.toLowerCase))
+        user (get-login-detail-by-email! datasource email)
         encrypted-password (:password user)]
     (if (crypto/check-password password encrypted-password)
       (if (user-service/deleted? user)

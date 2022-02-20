@@ -27,14 +27,30 @@
     (guest-model/get-all! connection {:accommodation false
                                       :rsvp_answered true})))
 
+(defn beer-drinkers
+  "Returns guests who will drink beer at the wedding."
+  [datasource]
+  (jdbc/with-db-connection [connection {:datasource datasource}]
+    (guest-model/get-all! connection {:is_beer_drinker true})))
+
+(defn wine-drinkers
+  "Returns guests who will drink wine at the wedding."
+  [datasource]
+  (jdbc/with-db-connection [connection {:datasource datasource}]
+    (guest-model/get-all! connection {:is_wine_drinker true})))
+
 (defn bundled-statistics
   "Returns all statistics for RSVP and accommodation bundled together."
   [datasource]
   (let [rsvp-answered          (rsvp-answered datasource)
         rsvp-unanswered        (rsvp-unanswered datasource)
         accommodation-accepted (accommodation-accepted datasource)
-        accommodation-declined (accommodation-declined datasource)]
+        accommodation-declined (accommodation-declined datasource)
+        beer-drinkers          (beer-drinkers datasource)
+        wine-drinkers          (wine-drinkers datasource)]
     {:rsvp_answered_count          (:count rsvp-answered)
      :rsvp_unanswered_count        (:count rsvp-unanswered)
      :accommodation_accepted_count (:count accommodation-accepted)
-     :accommodation_declined_count (:count accommodation-declined)}))
+     :accommodation_declined_count (:count accommodation-declined)
+     :beer_drinkers_count          (:count beer-drinkers)
+     :wine_drinkers_count          (:count wine-drinkers)}))
