@@ -11,5 +11,6 @@ CREATE VIEW v_rsvp_guests AS
             ' '
         ) AS full_name
     FROM guests
-    WHERE rsvp_answered = false;
+    WHERE rsvp_answered = false
+    ORDER BY id;
 --;;

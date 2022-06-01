@@ -11,6 +11,8 @@
    {:swagger {:tags ["Guests"]}}
    [""
     {:get  {:summary   "Returns list of guests"
+            :parameters {:query {(s/optional-key :order_direction) s/Str
+                                 (s/optional-key :order_column)    s/Str}}
             :responses {200 {:body GuestListOutput}}
             :handler   (wrap-with-context
                          (fn [request]

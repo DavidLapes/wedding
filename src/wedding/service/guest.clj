@@ -35,9 +35,9 @@
 
 (defn get!
   "Returns list of guests."
-  [datasource]
+  [datasource filters]
   (jdbc/with-db-connection [connection {:datasource datasource}]
-    (model/get-all! connection)))
+    (model/get-all! connection filters)))
 
 (defn get-by-id!
   "Returns guest by given id."

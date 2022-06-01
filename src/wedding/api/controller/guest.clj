@@ -39,8 +39,8 @@
 
 (defn get
   "Returns list of guests."
-  [{:keys [ctx]}]
-  (let [guests (service/get! (:datasource ctx))]
+  [{:keys [ctx query-params]}]
+  (let [guests (service/get! (:datasource ctx) query-params)]
     (ok guests)))
 
 (defn get-by-id
