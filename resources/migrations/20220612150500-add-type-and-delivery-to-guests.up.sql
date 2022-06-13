@@ -1,0 +1,10 @@
+ALTER TABLE guests ADD COLUMN type VARCHAR(32) NOT NULL DEFAULT 'PRIMARY';
+--;;
+ALTER TABLE guests ADD COLUMN escort_id SMALLINT;
+--;;
+ALTER TABLE guests ADD CONSTRAINT guests_guest_id_fkey FOREIGN KEY (escort_id) REFERENCES guests(id);
+--;;
+ALTER TABLE guests ADD COLUMN is_invitation_sent BOOLEAN NOT NULL DEFAULT false;
+--;;
+ALTER TABLE guests ADD COLUMN invitation_delivery_type VARCHAR(32);
+--;;

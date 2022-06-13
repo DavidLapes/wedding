@@ -12,13 +12,40 @@
   "Creates new guest."
   [datasource data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (model/create! connection data)))
+    (let [new-guest (model/create! connection data)]
+      (model/get-by-id! connection (:id new-guest)))))
 
 (defn update!
   "Updates an existing guest."
   [datasource audit-logger id data]
   (jdbc/with-db-transaction [connection {:datasource datasource}]
-    (let [guest-record (model/get-by-id! connection id)]
+    (let [guest-record (model/get-by-id! connection id)
+          plus-one (if (some? (:escort_id data))
+                     (model/get-by-id! connection (:escort_id data))
+                     nil)]
+      (when (and (some? (:escort_id data))
+                 (not= (:type data) "PLUS_ONE"))
+        (throw (ex-info "When assigning an escort, guest needs to be marked as plus one, not primary"
+                        {:cause :incorrect-type-when-assigning-escort})))
+      (when (and (nil? (:escort_id data))
+                 (= (:type data) "PLUS_ONE"))
+        (throw (ex-info "When marking a guest as plus one, you need to provide an escort the guest belongs to"
+                        {:cause :missing-escort-for-plus-one-type-guest})))
+      (when (= id (:escort_id data))
+        (throw (ex-info "Guest can not be an escort to itself"
+                        {:cause :guest-being-escort-to-itself})))
+      (when (and (not= (:type plus-one) "PRIMARY")
+                 (not= (:type data) "PRIMARY"))
+        (throw (ex-info "When assigning escort, it needs to be a primary guest"
+                        {:cause :escort-not-being-primary-guest})))
+      (when (and (some? (:invitation_delivery_type data))
+                 (false? (:is_invitation_sent data)))
+        (throw (ex-info "When changing delivery type, invitation must be marked as sent"
+                        {:cause :delivery-type-missing-sent-status})))
+      (when (and (nil? (:invitation_delivery_type data))
+                 (true? (:is_invitation_sent data)))
+        (throw (ex-info "When marking delivery as sent, you must provide how it was delivered"
+                        {:cause :sent-delivery-missing-type})))
       (try
         (model/update! connection id data)
         (-persist audit-logger {:event   "MODIFY_GUEST"

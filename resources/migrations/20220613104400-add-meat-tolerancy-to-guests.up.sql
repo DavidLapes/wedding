@@ -1,0 +1,2 @@
+ALTER TABLE guests ADD COLUMN is_meat_eater BOOLEAN NOT NULL DEFAULT true;
+--;;
