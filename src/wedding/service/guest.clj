@@ -23,8 +23,11 @@
           plus-one (if (some? (:escort_id data))
                      (model/get-by-id! connection (:escort_id data))
                      nil)]
-      (when (and (some? (:escort_id data))
-                 (not= (:type data) "PLUS_ONE"))
+      (when (or (and (some? (:escort_id data))
+                     (not= (:type data) "PLUS_ONE"))
+                (and (and (some? (:escort_id guest-record))
+                          (not (some? (some #{:escort_id} (keys data)))))
+                     (not= (:type data) "PLUS_ONE")))
         (throw (ex-info "When assigning an escort, guest needs to be marked as plus one, not primary"
                         {:cause :incorrect-type-when-assigning-escort})))
       (when (and (nil? (:escort_id data))
