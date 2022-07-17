@@ -1,6 +1,9 @@
 (ns wedding.api.route.private.statistics
   (:require [wedding.api.controller.statistics :as controller]
-            [wedding.api.schema.statistics :refer [BundledStatisticsOutput RSVPAnsweredOutput RSVPUnansweredOutput AccommodationAcceptedOutput AccommodationDeclinedOutput BeerDrinkersOutput WineDrinkersOutput]]
+            [wedding.api.schema.statistics :refer [BundledStatisticsOutput RSVPAnsweredOutput RSVPUnansweredOutput
+                                                   AccommodationAcceptedOutput AccommodationDeclinedOutput
+                                                   BeerDrinkersOutput WineDrinkersOutput
+                                                   GuestsWithRoomOutput GuestsWithoutRoomOutput]]
             [wedding.lib.api.router :refer [wrap-with-context]]))
 
 (def routes
@@ -47,4 +50,16 @@
            :responses {200 {:body WineDrinkersOutput}}
            :handler (wrap-with-context
                       (fn [request]
-                        (controller/wine-drinkers request)))}}]])
+                        (controller/wine-drinkers request)))}}]
+   ["/guestswithroom"
+    {:get {:summary "Returns number of guests who have room assigned"
+           :responses {200 {:body GuestsWithRoomOutput}}
+           :handler (wrap-with-context
+                      (fn [request]
+                        (controller/guests-with-room request)))}}]
+   ["/guestswithoutroom"
+    {:get {:summary "Returns number of guests who are waiting for a room"
+           :responses {200 {:body GuestsWithoutRoomOutput}}
+           :handler (wrap-with-context
+                      (fn [request]
+                        (controller/guests-without-room request)))}}]])

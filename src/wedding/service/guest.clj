@@ -6,6 +6,7 @@
             [taoensso.timbre :as timbre]
             [wedding.api.schema.guest :refer [SubmitRSVP]]
             [wedding.model.guest :as model]
+            [wedding.model.room :as room-model]
             [wedding.lib.email.template :as template]))
 
 (defn create!
@@ -62,6 +63,28 @@
           (jdbc/db-set-rollback-only! connection)
           (timbre/error e)
           (throw (ex-info "Modification of guest has failed" {:cause :modify-guest-failed})))))))
+
+(defn assign-guest-to-room
+  "Assigns guest to a room if it still has space. If room does not have free space anymore, throw an exception."
+  [datasource audit-logger guest-id room-id]
+  (jdbc/with-db-transaction [connection {:datasource datasource}]
+    (let [guest-model (model/get-by-id! connection guest-id)]
+      (when (some? room-id)
+        (let [room-model (room-model/get-by-id! connection room-id)
+              free-space (- (:bed_count room-model) (:allocated_count room-model))]
+          (when-not (> free-space 0)
+            (throw (ex-info "Room you are trying to assign guest to is already full." {:cause :room-already-full})))))
+      (try
+        (model/update! connection guest-id {:room_id room-id})
+        (-persist audit-logger {:event "ASSIGN_GUEST_TO_ROOM"
+                                :payload (merge {:room_id room-id
+                                                 :guest_id guest-id}
+                                                {:record guest-model})})
+        (model/get-by-id! connection guest-id)
+        (catch Exception e
+          (timbre/error e)
+          (jdbc/db-set-rollback-only! connection)
+          (throw (ex-info "Assigning room to guest has failed" {:cause :modify-guest-failed})))))))
 
 (defn get!
   "Returns list of guests."

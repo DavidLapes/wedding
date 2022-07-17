@@ -26,10 +26,20 @@
   {:data [GuestOutput]
    :count s/Int})
 
+(s/defschema GuestsWithRoomOutput
+  {:data [GuestOutput]
+   :count s/Int})
+
+(s/defschema GuestsWithoutRoomOutput
+  {:data [GuestOutput]
+   :count s/Int})
+
 (s/defschema BundledStatisticsOutput
   {:rsvp_answered_count          s/Int
    :rsvp_unanswered_count        s/Int
    :accommodation_accepted_count s/Int
    :accommodation_declined_count s/Int
    :beer_drinkers_count          s/Int
-   :wine_drinkers_count          s/Int})
+   :wine_drinkers_count          s/Int
+   :guests_with_room_count       s/Int
+   :guests_without_room_count    s/Int})

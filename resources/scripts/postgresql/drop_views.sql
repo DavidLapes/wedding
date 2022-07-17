@@ -1,4 +1,12 @@
 DROP VIEW IF EXISTS v_rsvp_guests;
 --;;
+DROP VIEW IF EXISTS v_guests_with_room;
+--;;
+DROP VIEW IF EXISTS v_guests_without_room;
+--;;
+DROP VIEW IF EXISTS v_accommodation_rooms_available;
+--;;
+DROP VIEW IF EXISTS v_accommodation_rooms;
+--;;
 DROP VIEW IF EXISTS v_guests;
 --;;

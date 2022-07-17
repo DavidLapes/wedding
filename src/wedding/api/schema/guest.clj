@@ -70,7 +70,10 @@
    :is_invitation_sent            s/Bool
    :invitation_delivery_type      (s/maybe (s/enum "MAIL" "IN_PERSON"))
    :invitation_delivery_type_name (s/maybe s/Str)
-   :is_meat_eater                 s/Bool})
+   :is_meat_eater                 s/Bool
+   :room_id                       (s/maybe s/Int)
+   :room_number                   (s/maybe s/Str)
+   :full_name                     s/Str})
 
 (s/defschema GuestListOutput
   {:data  [GuestOutput]

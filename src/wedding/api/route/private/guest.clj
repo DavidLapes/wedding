@@ -42,4 +42,12 @@
               :parameters {:path {:id s/Int}}
               :handler    (wrap-with-context
                             (fn [request]
-                              (controller/delete request)))}}]])
+                              (controller/delete request)))}}]
+   ["/:id/rooms"
+    {:put {:summary    "Assigns guest to a room"
+           :responses  {200 {:body GuestOutput}}
+           :parameters {:body {:room_id (s/maybe s/Int)}
+                        :path {:id      s/Int}}
+           :handler    (wrap-with-context
+                         (fn [request]
+                           (controller/assign-guest-to-room request)))}}]])

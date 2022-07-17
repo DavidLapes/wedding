@@ -37,6 +37,14 @@
         guest (service/update! (:datasource ctx) audit-logger id body-params)]
     (ok guest)))
 
+(defn assign-guest-to-room [{:keys [ctx parameters body-params]}]
+  "Assigns guest to a room."
+  (let [id   (-> parameters :path :id)
+        room-id (:room_id body-params)
+        audit-logger (:audit-logger ctx)
+        guest (service/assign-guest-to-room (:datasource ctx) audit-logger id room-id)]
+    (ok guest)))
+
 (defn get
   "Returns list of guests."
   [{:keys [ctx query-params]}]

@@ -11,9 +11,10 @@
             [reitit.ring.coercion :as coercion]
             [ring.logger :as logger]
             [taoensso.timbre :as timbre]
-            [wedding.api.route.private.audit :as audit-private]
             [wedding.api.route.health-check :as health-check]
+            [wedding.api.route.private.audit :as audit-private]
             [wedding.api.route.private.guest :as guest-private]
+            [wedding.api.route.private.room :as room-private]
             [wedding.api.route.private.statistics :as statistics-private]
             [wedding.api.route.private.table :as table-private]
             [wedding.api.route.public.auth :as auth-public]
@@ -41,6 +42,7 @@
                                     auth/wrap-authentication-check]}
                       audit-private/routes
                       guest-private/routes
+                      room-private/routes
                       statistics-private/routes
                       table-private/routes]]]
 

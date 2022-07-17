@@ -39,6 +39,18 @@
   (jdbc/with-db-connection [connection {:datasource datasource}]
     (guest-model/get-all! connection {:is_wine_drinker true})))
 
+(defn guests-with-room
+  "Returns guests who have room assigned."
+  [datasource]
+  (jdbc/with-db-connection [connection {:datasource datasource}]
+    (guest-model/get-guests-with-room! connection)))
+
+(defn guests-without-room
+  "Returns guests who are waiting for a room."
+  [datasource]
+  (jdbc/with-db-connection [connection {:datasource datasource}]
+    (guest-model/get-guests-without-room! connection)))
+
 (defn bundled-statistics
   "Returns all statistics for RSVP and accommodation bundled together."
   [datasource]
@@ -47,10 +59,14 @@
         accommodation-accepted (accommodation-accepted datasource)
         accommodation-declined (accommodation-declined datasource)
         beer-drinkers          (beer-drinkers datasource)
-        wine-drinkers          (wine-drinkers datasource)]
+        wine-drinkers          (wine-drinkers datasource)
+        guests-with-room       (guests-with-room datasource)
+        guests-without-room    (guests-without-room datasource)]
     {:rsvp_answered_count          (:count rsvp-answered)
      :rsvp_unanswered_count        (:count rsvp-unanswered)
      :accommodation_accepted_count (:count accommodation-accepted)
      :accommodation_declined_count (:count accommodation-declined)
      :beer_drinkers_count          (:count beer-drinkers)
-     :wine_drinkers_count          (:count wine-drinkers)}))
+     :wine_drinkers_count          (:count wine-drinkers)
+     :guests_with_room_count       (:count guests-with-room)
+     :guests_without_room_count    (:count guests-without-room)}))

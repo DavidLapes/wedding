@@ -4,6 +4,8 @@
 (def table-name :guests)
 (def view-table-name :v_guests)
 (def view-rsvp-guests :v_rsvp_guests)
+(def view-guests-with-room :v_guests_with-room)
+(def view-guests-without-room :v_guests_without_room)
 
 (defn create!
   "Creates new guest."
@@ -31,6 +33,16 @@
   "Returns all guests who have not responded to RSVP form yet."
   [connection]
   (query/get-all! connection view-rsvp-guests {}))
+
+(defn get-guests-with-room!
+  "Returns guests who have room assigned."
+  [connection]
+  (query/get-all! connection view-guests-with-room {}))
+
+(defn get-guests-without-room!
+  "Returns guests who are waiting for a room."
+  [connection]
+  (query/get-all! connection view-guests-without-room {}))
 
 (defn delete!
   "Deletes guest by id."

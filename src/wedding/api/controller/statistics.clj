@@ -44,6 +44,20 @@
         data (service/wine-drinkers datasource)]
     (ok data)))
 
+(defn guests-with-room
+  "Returns guests who have room assigned."
+  [{:keys [ctx]}]
+  (let [datasource (:datasource ctx)
+        data (service/guests-with-room datasource)]
+    (ok data)))
+
+(defn guests-without-room
+  "Returns guests who are waiting for a room."
+  [{:keys [ctx]}]
+  (let [datasource (:datasource ctx)
+        data (service/guests-without-room datasource)]
+    (ok data)))
+
 (defn bundled-statistics
   "Returns all statistics for RSVP and accommodation bundled together."
   [{:keys [ctx]}]

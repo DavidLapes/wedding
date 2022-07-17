@@ -30,7 +30,9 @@
    :delivery-type-missing-sent-status      {:code    bad-request
                                             :message "Při přidání typu doručení pozvánky musí být pozvánka označena jako doručená"}
    :sent-delivery-missing-type             {:code    bad-request
-                                            :message "Při označení doručení pozvánky jako doručeno musíte určit i typ doručení"}})
+                                            :message "Při označení doručení pozvánky jako doručeno musíte určit i typ doručení"}
+   :room-already-full                      {:code    bad-request
+                                            :message "Pokoj je již v plné kapacitě."}})
 
 (defn- get-exception-cause [exception]
   (let [class (type exception)]
